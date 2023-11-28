@@ -1,6 +1,9 @@
 # vCard
 DAD Project
 
-# TODO:
-tudo
+# TODO
+
+API         -  
+VUE         -
+WEBSOCKETS  -
 
