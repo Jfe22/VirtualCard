@@ -25,9 +25,11 @@ import { RouterLink, RouterView } from 'vue-router'
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-box-arrow-in-right"></i>
+            <router-link class="nav-link" :class="{ active: $route.name === 'Login' }"
+                        :to="{ name: 'Login' }">
+              <i class="bi bi-box-arrow-in-right"></i>
               Login
-            </a>
+            </router-link>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -65,7 +67,7 @@ import { RouterLink, RouterView } from 'vue-router'
                             :to="{ name: 'Dashboard' }">
                   <i class="bi bi-house"></i>
                   Dashboard
-                </router-link>
+              </router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link" :class="{ active: $route.name === 'Vcards' }"
@@ -145,10 +147,11 @@ import { RouterLink, RouterView } from 'vue-router'
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <router-link class="nav-link" :class="{ active: $route.name === 'Login' }"
+                            :to="{ name: 'Login' }">
                   <i class="bi bi-box-arrow-in-right"></i>
                   Login
-                </a>
+                </router-link>
               </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button"
