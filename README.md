@@ -3,7 +3,7 @@ DAD Project
 
 # TODO
 
-API         -  
-VUE         -
-WEBSOCKETS  -
+- API
+- VUE
+- WEBSOCKETS
 
