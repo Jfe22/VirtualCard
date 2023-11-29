@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\VcardController;
+use App\Http\Controllers\api\auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('users', [UserController::class, 'index']);
 Route::get('vcards', [VcardController::class, 'index']);
+
+Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');

@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [ 
+            'driver' => 'passport', 
+            'provider' => 'users', // We will use the users table to authenticate our API
+            //'provider' => 'aquela view da bd c users mais vcards???', // maybe this one
+        ],
     ],
 
     /*
