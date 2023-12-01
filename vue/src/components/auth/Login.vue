@@ -4,6 +4,9 @@ import { useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 
+const toast = useToast()
+const router = useRouter()
+
 const credentials = ref({
   username: '',
   password: ''
