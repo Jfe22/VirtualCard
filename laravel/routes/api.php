@@ -25,4 +25,8 @@ Route::get('users', [UserController::class, 'index']);
 Route::get('vcards', [VcardController::class, 'index']);
 
 Route::post('login', [AuthController::class, 'login']);
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+
+Route::middleware('auth:api')->group(function () {
+  Route::post('logout', [AuthController::class, 'logout']);
+  Route::get('users/me', [UserController::class, 'show_me']);
+});

@@ -3,9 +3,11 @@ import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { useUserStore } from '../../stores/user.js'
 
 const toast = useToast()
 const router = useRouter()
+const userStore = useUserStore()
 
 const credentials = ref({
   username: '',
@@ -15,20 +17,16 @@ const credentials = ref({
 const emit = defineEmits(['login'])
 
 const login = async () => {
-  try {
-    const response = await axios.post('login', credentials.value)
-    toast.success('User ' + credentials.value.username + ' has entered the application.')
-    axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token
+  console.log(userStore)
+  if (await userStore.login(credentials.value)) {
+    toast.success('User ' + userStore.user.name + ' has entered the application.')
     emit('login')
     router.back()
-  }
-  catch (error) {
-    delete axios.defaults.headers.common.Authorization
+  } else {
     credentials.value.password = ''
     toast.error('User credentials are invalid!')
   }
 }
-
 
 </script>
 

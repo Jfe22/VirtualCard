@@ -2,15 +2,16 @@
 import { RouterLink, RouterView } from 'vue-router'
 import axios from 'axios';
 import { useToast } from 'vue-toastification'
+import { useUserStore } from './stores/user.js'
 
 const toast = useToast()
+const userStore = useUserStore()
 
 const logout = async () => {
-  try {
-    await axios.post('logout')
+  if (await userStore.logout()) {
     toast.success('User has logged out of the application.')
-    delete axios.defaults.headers.common.Authorization
-  } catch (error) {
+    router.push({ name: 'Login' })
+  } else {
     toast.error('There was a problem logging out of the application!')
   }
 }
@@ -47,9 +48,9 @@ const logout = async () => {
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
-              <img src="@/assets/avatar-exemplo-1.jpg" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
-              <span class="avatar-text">User Name</span>
-            </a>
+              <img :src="userStore.userPhotoUrl" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
+              <span class="avatar-text">{{ userStore.userName }}</span>
+            </a>  
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
                 <a class="dropdown-item" href="#"><i class="bi bi-person-square"></i>Profile</a>
@@ -167,11 +168,11 @@ const logout = async () => {
                 </router-link>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink2" role="button"
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                   data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="@/assets/avatar-exemplo-1.jpg" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
-                  <span class="avatar-text">User Name</span>
-                </a>
+                  <img :src="userStore.userPhotoUrl" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
+                  <span class="avatar-text">{{ userStore.userName }}</span>
+                </a>  
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
                   <li>
                     <a class="dropdown-item" href="#">
