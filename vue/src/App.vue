@@ -1,6 +1,19 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import axios from 'axios';
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()
+
+const logout = async () => {
+  try {
+    await axios.post('logout')
+    toast.success('User has logged out of the application.')
+    delete axios.defaults.headers.common.Authorization
+  } catch (error) {
+    toast.error('There was a problem logging out of the application!')
+  }
+}
 
 </script>
 
@@ -48,7 +61,7 @@ import { RouterLink, RouterView } from 'vue-router'
                 <hr class="dropdown-divider">
               </li>
               <li>
-                <a class="dropdown-item" href="#"><i class="bi bi-arrow-right"></i>Logout</a>
+                <a class="dropdown-item" @click.prevent="logout"><i class="bi bi-arrow-right"></i>Logout</a>
               </li>
             </ul>
           </li>
@@ -173,9 +186,11 @@ import { RouterLink, RouterView } from 'vue-router'
                   <li>
                     <hr class="dropdown-divider">
                   </li>
-                  <li><a class="dropdown-item" href="#">
+                  <li>
+                    <a class="dropdown-item" @click.prevent="logout"> 
                       <i class="bi bi-arrow-right"></i>Logout
-                    </a></li>
+                    </a>
+                  </li>
                 </ul>
               </li>
             </ul>
