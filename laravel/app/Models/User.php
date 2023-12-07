@@ -16,6 +16,11 @@ class User extends Authenticatable
     
     protected $table = 'view_auth_users';
 
+    public function findForPassport($username)
+    {
+        return $this->where('username', $username)->first();
+    }
+
 
     /**
      * The attributes that are mass assignable.

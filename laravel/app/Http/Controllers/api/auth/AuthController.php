@@ -24,6 +24,7 @@ class AuthController extends Controller
   public function login(Request $request)
   {
     error_log('tamos aqui ou nao');
+    error_log($request);
     try {
       request()->request->add(
       $this->passportAuthenticationData($request->username, $request->password));
