@@ -34,13 +34,13 @@ const logout = async () => {
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-person-check-fill"></i>
+            <router-link class="nav-link" :class="{ active: $route.name === 'Register' }" :to="{ name: 'Register' }">
+              <i class="bi bi-bi bi-person-check-fill"></i>
               Register
-            </a>
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" :class="{ active: $route.name === 'Login' }"
-                        :to="{ name: 'Login' }">
+            <router-link class="nav-link" :class="{ active: $route.name === 'Login' }" :to="{ name: 'Login' }">
               <i class="bi bi-box-arrow-in-right"></i>
               Login
             </router-link>
@@ -50,13 +50,18 @@ const logout = async () => {
               data-bs-toggle="dropdown" aria-expanded="false">
               <img :src="userStore.userPhotoUrl" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
               <span class="avatar-text">{{ userStore.userName }}</span>
-            </a>  
+            </a>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
                 <a class="dropdown-item" href="#"><i class="bi bi-person-square"></i>Profile</a>
               </li>
               <li>
-                <a class="dropdown-item" href="#"><i class="bi bi-key-fill"></i>Change password</a>
+                <router-link :class="{ active: $route.name === 'ChangePassword' }" :to="{ name: 'ChangePassword' }">
+                  <a class="dropdown-item">
+                    <i class="bi bi-key-fill"></i>
+                    Change password
+                  </a>
+                </router-link>
               </li>
               <li>
                 <hr class="dropdown-divider">
@@ -77,77 +82,25 @@ const logout = async () => {
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }"
-                            :to="{ name: 'Dashboard' }">
-                  <i class="bi bi-house"></i>
-                  Dashboard
+              <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }" :to="{ name: 'Dashboard' }">
+                <i class="bi bi-house"></i>
+                Dashboard
               </router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" :class="{ active: $route.name === 'Vcards' }"
-                            :to="{ name: 'Vcards' }">
-                  <i class="bi bi-list-stars"></i>
-                  Vcards 
-                </router-link>
+              <router-link class="nav-link" :class="{ active: $route.name === 'Vcards' }" :to="{ name: 'Vcards' }">
+                <i class="bi bi-caret-right"></i>
+                Vcards
+              </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi bi-list-stars"></i>
-                Current Tasks
-              </a>
+              <router-link class="nav-link" :class="{ active: $route.name === 'Transactions' }"
+                :to="{ name: 'Transactions' }">
+                <i class="bi bi-caret-right"></i>
+                Transactions
+              </router-link>
             </li>
-            <li class="nav-item d-flex justify-content-between align-items-center pe-3">
-              <a class="nav-link w-100 me-3" href="#">
-                <i class="bi bi-list-check"></i>
-                Tasks
-              </a>
-              <a class="link-secondary" href="#" aria-label="Add a new task">
-                <i class="bi bi-xs bi-plus-circle"></i>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi bi-files"></i>
-                Projects
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi bi-people"></i>
-                Team Members
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi bi-bar-chart-line"></i>
-                Reports
-              </a>
-            </li>
-          </ul>
 
-          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-            <span>My Projects</span>
-            <a class="link-secondary" href="#" aria-label="Add a new project">
-              <i class="bi bi-xs bi-plus-circle"></i>
-            </a>
-          </h6>
-          <ul class="nav flex-column mb-2">
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi bi-file-ruled"></i>
-                Some project
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="bi bi-file-ruled"></i>
-                Another project
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="bi bi-file-ruled"></i>
-                Yet another project
-              </a>
-            </li>
           </ul>
 
           <div class="d-block d-md-none">
@@ -156,13 +109,13 @@ const logout = async () => {
             </h6>
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
-                <a class="nav-link" href="#"><i class="bi bi-person-check-fill"></i>
+                <router-link class="nav-link" :class="{ active: $route.name === 'Register' }" :to="{ name: 'Register' }">
+                  <i class="bi bi-box-arrow-in-right"></i>
                   Register
-                </a>
+                </router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" :class="{ active: $route.name === 'Login' }"
-                            :to="{ name: 'Login' }">
+                <router-link class="nav-link" :class="{ active: $route.name === 'Login' }" :to="{ name: 'Login' }">
                   <i class="bi bi-box-arrow-in-right"></i>
                   Login
                 </router-link>
@@ -172,23 +125,23 @@ const logout = async () => {
                   data-bs-toggle="dropdown" aria-expanded="false">
                   <img :src="userStore.userPhotoUrl" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
                   <span class="avatar-text">{{ userStore.userName }}</span>
-                </a>  
+                </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
                   <li>
                     <a class="dropdown-item" href="#">
                       <i class="bi bi-person-square"></i>Profile</a>
                   </li>
-                  <li>
-                    <a class="dropdown-item" href="#">
+                  <li class="dropdown-item">
+                    <router-link :class="{ active: $route.name === 'ChangePassword' }" :to="{ name: 'ChangePassword' }">
                       <i class="bi bi-key-fill"></i>
                       Change password
-                    </a>
+                    </router-link>
                   </li>
                   <li>
                     <hr class="dropdown-divider">
                   </li>
                   <li>
-                    <a class="dropdown-item" @click.prevent="logout"> 
+                    <a class="dropdown-item" @click.prevent="logout">
                       <i class="bi bi-arrow-right"></i>Logout
                     </a>
                   </li>
