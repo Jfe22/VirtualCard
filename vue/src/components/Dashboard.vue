@@ -2,16 +2,15 @@
 </script>
 
 <template>
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-      <h1 class="h2">Plataforma vCard</h1>
-    </div>
-    <div>
-      <h4>Seleciona vCards na dashboard</h4>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, minus. Voluptatum cum iusto, commodi sunt molestias beatae adipisci architecto aspernatur, molestiae dicta placeat earum fugiat consequatur. Cum reiciendis ex amet!</p>
-    </div>
-    <div>
-      <h4>Icons</h4>
-      <p>Icons used for this template: <a href="https://icons.getbootstrap.com/"><strong>Bootstrap Icons</strong></a></p>
-    </div>
+  <div>
+    <h1>Dashboard</h1>
+    <h5>Balance: </h5>
+    <hr>
+    <button type="button" class="btn btn-dark">Send Money to vCard</button>
+    <p></p>
+    <button type="button" class="btn btn-dark">Send Money to External Financial Entities</button>
+    <p></p>
+    <button type="button" class="btn btn-dark">Debit Transaction</button>
+  </div>
 </template>
   

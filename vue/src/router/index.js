@@ -4,6 +4,9 @@ import HomeView from '../views/HomeView.vue'
 import Dashboard from '../components/Dashboard.vue'
 import Vcards from '../components/Vcards.vue'
 import Login from '../components/auth/Login.vue'
+import Transactions from '../components/Transactions.vue'
+import ChangePassword from '../components/auth/ChangePassword.vue'
+import Register from '../components/auth/Register.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,14 +30,29 @@ const router = createRouter({
       component: Dashboard
     },
     {
+      path: '/login',
+      name: 'Login',
+      component: Login 
+    },
+    {
+      path: '/transactions',
+      name: 'Transactions',
+      component: Transactions 
+    },
+    {
       path: '/vcards',
       name: 'Vcards',
       component: Vcards 
     },
     {
-      path: '/login',
-      name: 'Login',
-      component: Login 
+      path: '/changepassword',
+      name: 'ChangePassword',
+      component: ChangePassword 
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
   ]
 })
