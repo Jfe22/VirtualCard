@@ -13,7 +13,7 @@ import router from './router'
 
 const app = createApp(App)
 
-const serverBaseUrl = 'http://localhost'
+const serverBaseUrl = 'http://localhost:8000'
 app.provide('serverBaseUrl', serverBaseUrl)
 
 axios.defaults.baseURL = serverBaseUrl + '/api'
