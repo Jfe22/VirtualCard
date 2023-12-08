@@ -6,6 +6,7 @@ import avatarNoneUrl from '@/assets/avatar-none.png'
 export const useUserStore = defineStore('user', () => {
   const serverBaseUrl = inject('serverBaseUrl')
   const user = ref(null)
+  const userId = computed(() => user.value?.id ?? -1)
   const userName = computed(() => user.value?.name ?? 'Anonymous')
   const userPhotoUrl = computed(() =>
     user.value?.photo_url
@@ -50,5 +51,5 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { user, userName, userPhotoUrl, loadUser, clearUser, login, logout }
+  return { user, userId, userName, userPhotoUrl, loadUser, clearUser, login, logout }
 })
