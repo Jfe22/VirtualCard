@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\VcardController;
 use App\Http\Controllers\api\auth\AuthController;
+use App\Http\Controllers\api\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('users', [UserController::class, 'index']);
+Route::get('vcards', [VcardController::class, 'index']);
+Route::get('transactions', [TransactionController::class, 'index']);
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -28,8 +32,6 @@ Route::middleware('auth:api')->group(function () {
   Route::post('logout', [AuthController::class, 'logout']);
   Route::get('users/me', [UserController::class, 'show_me']);
 
-  Route::get('users', [UserController::class, 'index']);
-  Route::get('vcards', [VcardController::class, 'index']);
 
   //estes endpoints  ainda nao foram implementados
   Route::get('users/{user}', [UserController::class, 'show'])
