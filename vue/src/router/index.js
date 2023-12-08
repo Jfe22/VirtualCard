@@ -7,6 +7,9 @@ import Login from '../components/auth/Login.vue'
 import Transactions from '../components/Transactions.vue'
 import ChangePassword from '../components/auth/ChangePassword.vue'
 import Register from '../components/auth/Register.vue'
+import Profile from '../components/Profile.vue'
+import EditProfile from '../components/EditProfile.vue'
+import Categories from '../components/Categories.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,6 +57,22 @@ const router = createRouter({
       name: 'Register',
       component: Register
     },
+    {
+      path: '/profile',
+      name: 'Profile',
+      component: Profile
+    },
+    {
+      path: '/editprofile',
+      name: 'EditProfile',
+      component: EditProfile
+    },
+    {
+      path: '/categories',
+      name: 'Categories',
+      component: Categories
+    },
+
   ]
 })
 

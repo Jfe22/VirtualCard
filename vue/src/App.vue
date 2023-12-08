@@ -100,6 +100,19 @@ const logout = async () => {
                 Transactions
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Categories' }"
+                :to="{ name: 'Categories' }">
+                <i class="bi bi-caret-right"></i>
+                Categories
+              </router-link>
+            </li>
+            <li class="nav-item">
+              
+                <i class="bi bi-caret-right"></i>
+                Statistics
+              
+            </li>
 
           </ul>
 
