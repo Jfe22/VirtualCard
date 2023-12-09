@@ -22,4 +22,9 @@ class Vcard extends Model
     return $this->hasMany(Category::class, 'category_id');
   }
 
+  public function getRouteKeyName()
+  {
+    return 'phone_number';
+  }
+
 }
