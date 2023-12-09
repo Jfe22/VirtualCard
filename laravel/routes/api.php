@@ -26,6 +26,22 @@ Route::get('users', [UserController::class, 'index']);
 Route::get('vcards', [VcardController::class, 'index']);
 Route::get('transactions', [TransactionController::class, 'index']);
 
+Route::get('users/{user}', [UserController::class, 'show']);
+Route::get('vcards/{vcard}', [VcardController::class, 'show']);
+Route::get('transactions/{transaction}', [TransactionController::class, 'show']);
+
+Route::post('users', [UserController::class, 'store']);
+Route::post('vcards', [VcardController::class, 'store']);
+Route::post('transactions', [TransactionController::class, 'store']);
+
+Route::put('users/{user}', [UserController::class, 'update']);
+Route::put('vcards/{vcard}', [VcardController::class, 'update']);
+Route::put('transactions/{transaction}', [TransactionController::class, 'update']);
+
+Route::delete('users/{user}', [UserController::class, 'destroy']);
+Route::delete('vcards/{vcard}', [VcardController::class, 'destroy']);
+Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy']);
+
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function () {
@@ -33,11 +49,13 @@ Route::middleware('auth:api')->group(function () {
   Route::get('users/me', [UserController::class, 'show_me']);
 
 
-  //estes endpoints  ainda nao foram implementados
+  // dont delete yet
+  /*
   Route::get('users/{user}', [UserController::class, 'show'])
     ->middleware('can:view,user');
   Route::put('users/{user}', [UserController::class, 'update'])
     ->middleware('can:update,user');
   Route::patch('users/{user}/password', [UserController::class, 'update_password'])
     ->middleware('can:updatePassword,user');
+  */
 });

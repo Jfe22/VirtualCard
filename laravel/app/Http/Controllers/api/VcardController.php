@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\VcardResource;
 use App\Models\Vcard;
 
+use App\Http\Requests\StoreUpdateVcardRequest;
+
 
 class VcardController extends Controller
 {
@@ -20,15 +22,13 @@ class VcardController extends Controller
       return new VcardResource($vcard);
     }
 
-    //redo with specific request type
-    public function store(Request $request) {
-      $vcard = Vcard::create($request->all()); //request->validaded 
+    public function store(StoreUpdateVcardRequest $request) {
+      $vcard = Vcard::create($request->validated()); 
       return new VcardResource($vcard);
     }
 
-    //also needs specific request type
-    public function update(Request $request, Vcard $vcard) {
-      $vcard->update($request->all());
+    public function update(StoreUpdateVcardRequest $request, Vcard $vcard) {
+      $vcard->update($request->validated());
       return new VcardResource($vcard);
     }
 

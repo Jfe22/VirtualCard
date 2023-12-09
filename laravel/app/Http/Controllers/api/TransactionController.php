@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Http\Resources\TransactionResource;
 
+use App\Http\Requests\StoreUpdateTransactionRequest;
+
 class TransactionController extends Controller
 {
     //
@@ -20,13 +22,13 @@ class TransactionController extends Controller
       return new TransactionResource($transaction);
     }
 
-    public function store(Request $request) {
-      $transaction = Transaction::create($request->all()); //request->validaded 
+    public function store(StoreUptadeTransactionRequest $request) {
+      $transaction = Transaction::create($request->validated());
       return new TransactionResource($transaction);
     }
 
-    public function update(Request $request, Transaction $transaction) {
-      $transaction->update($request->all());
+    public function update(StoreUpdateTransactionRequest $request, Transaction $transaction) {
+      $transaction->update($request->validated());
       return new TransactionResource($transaction);
     }
 

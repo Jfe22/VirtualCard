@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
 
+use App\Http\Requests\StoreUpdateUserRequest;
+
 class UserController extends Controller
 {
     //
@@ -22,13 +24,13 @@ class UserController extends Controller
       return new UserResource($user);
     }
 
-    public function store(Request $request) {
-      $user = User::create($request->all()); //request->validaded 
+    public function store(StoreUpdateUserRequest $request) {
+      $user = User::create($request->validated()); 
       return new UserResource($user);
     }
 
-    public function update(Request $request, User $user) {
-      $user->update($request->all());
+    public function update(StoreUpdateUserRequest $request, User $user) {
+      $user->update($request->validated());
       return new UserResource($user);
     }
 
