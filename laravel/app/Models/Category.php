@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class Category extends Model
 {
     use HasFactory;
 
@@ -15,9 +15,9 @@ class Transaction extends Model
         return $this->belongsTo(Vcard::class, 'phone_number');
     }
 
-    public function category()
+    public function transactions()
     {
-        return $this->belongsTo(Category::class, 'id');
+        return $this->hasMany(Transaction::class, 'category_id');
     }
 
 }
