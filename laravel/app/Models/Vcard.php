@@ -11,6 +11,18 @@ class Vcard extends Model
 {
   use HasFactory;
 
+      protected $fillable = [
+        'phone_number',
+        'name',
+        'email',
+        'password',
+        'confirmation_code',
+        'blocked',
+        'balance',
+        'max_debit',
+
+    ];
+
 
   public function transactions()
   {

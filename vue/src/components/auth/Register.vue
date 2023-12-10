@@ -11,28 +11,41 @@ const userStore = useUserStore()
 
 const credentials = ref({
   phone_number: '',
-  username: '',
-  password: ''
+  name: '',
+  email: '',
+  photo_url: '',
+  password: '',
+  confirmation_code: '',
+  blocked: 0,
+  balance: 0,
+  max_debit: 10000
 })
 
 const emit = defineEmits(['register'])
 
 const register = async () => {
   //to-do
+
+  try {
+    const response = await axios.post('vcards', credentials.value)
+    console.log(response)
+    //credentials.value = response.data.data
+    toast.success('User ' + credentials.username + ' has registered successfully.')
+    emit('register')
+    router.back()
+  } catch (error) {
+    console.log(error)
+    toast.error('error while registering!')
+  
+  }
 }
 
 </script>
 
 <template>
   <form class="row g-3 needs-validation" novalidate @submit.prevent="login">
-    <h3 class="mt-5 mb-3">Register New Account</h3>
+    <h3 class="mt-5 mb-3">Create a new vCard</h3>
     <hr>
-    <div class="mb-3">
-      <div class="mb-3">
-        <label for="inputUsername" class="form-label">Username</label>
-        <input type="text" class="form-control" id="inputUsername" required v-model="credentials.username">
-      </div>
-    </div>
     <div class="mb-3">
       <div class="mb-3">
         <label for="inputphone_number" class="form-label">Phone Number</label>
@@ -41,10 +54,29 @@ const register = async () => {
     </div>
     <div class="mb-3">
       <div class="mb-3">
+        <label for="inputName" class="form-label">Name</label>
+        <input type="text" class="form-control" id="inputName" required v-model="credentials.name">
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="mb-3">
+        <label for="inputEmail" class="form-label">Email</label>
+        <input type="text" class="form-control" id="inputEmail" required v-model="credentials.email">
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="mb-3">
         <label for="inputPassword" class="form-label">Password</label>
         <input type="password" class="form-control" id="inputPassword" required v-model="credentials.password">
       </div>
     </div>
+    <div class="mb-3">
+      <div class="mb-3">
+        <label for="inputConfirmation_code" class="form-label">Confirmation code</label>
+        <input type="password" class="form-control" id="inputConfirmation_code" required v-model="credentials.confirmation_code">
+      </div>
+    </div>
+
     <div class="mb-3 d-flex justify-content-center">
       <button type="button" class="btn btn-primary px-5" @click="register">Register</button>
       <div class="mb-3 d-flex justify-content-center">

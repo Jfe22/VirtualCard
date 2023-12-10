@@ -22,11 +22,14 @@ class StoreUpdateVcardRequest extends FormRequest
     public function rules(): array
     {
         return [
-          'phone_number' => 'required|string|max:9',
+          'phone_number' => 'required|string|size:9',
           'name' => 'required|string|max:255',
           'email' => 'required|email|max:255',
           'photo_url' => 'nullable|string|max:255',
-          'password' => 'required|confirmed|min:3',
+          //'password' => 'required|confirmed|min:3',
+          'password' => 'required|string|min:3',
+//          'confirmation_code' => 'required|confirmed|size:4',
+          'confirmation_code' => 'required|string|size:4',
           'blocked' => 'required|boolean',
           'balance' => 'required|numeric',
           'max_debit' => 'required|numeric',
