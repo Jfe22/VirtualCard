@@ -23,6 +23,18 @@ class Vcard extends Model
 
     ];
 
+  protected $hidden = [
+    'password',
+    'confirmation_code',
+  ];
+
+  protected $casts = [
+    'password' => 'hashed',
+    'confirmation_code' => 'hashed',
+  ];
+
+  
+
 
   public function transactions()
   {
@@ -38,5 +50,6 @@ class Vcard extends Model
   {
     return 'phone_number';
   }
+
 
 }

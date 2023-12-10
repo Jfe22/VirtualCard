@@ -23,16 +23,15 @@ class AuthController extends Controller
 
   public function login(Request $request)
   {
-    error_log($request);
     try {
       request()->request->add(
       $this->passportAuthenticationData($request->username, $request->password));
       $request = Request::create(
       env('PASSPORT_SERVER_URL') . '/oauth/token', 'POST');
-      error_log($request);
       $response = Route::dispatch($request); 
       $errorCode = $response->getStatusCode();
       $auth_server_response = json_decode((string) $response->content(), true);
+      //error_log($request);
       return response()->json($auth_server_response, $errorCode);
     }
     catch (\Exception $e) {
