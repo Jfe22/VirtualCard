@@ -5,6 +5,22 @@
 
   const transactions = ref([])
 
+  const newTransactionParams = ref({
+    id: '',   //como chegar ao metodo do lara que gera next id? 
+    vcard: '', 
+    date: '', 
+    datetime: '',
+    type: '',
+    old_balance:'',
+    new_balance: '', 
+    payment_type: '',
+    payment_reference: '',
+    pair_transaction: '',
+    pair_vcard: '',
+    category_id: '',
+    description: ''
+  })
+
   const loadTransactions = async () => {
     try {
       const response = await axios.get('transactions')
@@ -14,6 +30,28 @@
       console.error(error)
     }
   }
+
+
+
+  const emit = defineEmits(['registerNewTransaction'])
+
+
+  const registerNewTransaction = async () => {
+    try {
+      const response = await axios.post('transactions', newTransactionParams.value)
+      console.log(response)
+      // here we have to find a way to call http patch requests to update vcards balance
+      // const response = await axios.patch('vcards/' + newTransactionParams.value.vcard, newTransactionParams.value.new_balance)
+      toast.success('Transaction ' + newTransactionParams.value.id + ' completed successfully.')
+      emit('registerNewTransaction')
+      router.back()
+    } catch (error) {
+      console.log(error)
+      toast.error('error while registering!')
+    }
+  }
+
+
 
   onMounted(() => {
     loadTransactions()

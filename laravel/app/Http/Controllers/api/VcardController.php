@@ -35,12 +35,11 @@ class VcardController extends Controller
     public function destroy(Vcard $vcard) {
       //delete also database relations?? like associated transactions???
 
-
-      //should not be here, lines bellow should work
+      //should not be here, code bellow should work
       Vcard::where('phone_number', $vcard->phone_number)->delete();
 
-      //$vcard->delete();
       //why doesnt this work???
+      //$vcard->delete();
 
       return response()->json();
     }
