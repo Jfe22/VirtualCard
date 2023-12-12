@@ -1,8 +1,9 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import axios from 'axios';
 import { useToast } from 'vue-toastification'
 import { useUserStore } from './stores/user.js'
+import axios from 'axios';
+import { ref, onMounted } from 'vue'
 
 const toast = useToast()
 const userStore = useUserStore()
@@ -15,6 +16,18 @@ const logout = async () => {
     toast.error('There was a problem logging out of the application!')
   }
 }
+
+const userTransactions = ref([])
+
+onMounted(async () => {
+  try {
+    const userId = 1
+    const response = await axios.get("users/" + userId + "/transactions")
+    userTransactions.value = response.data.data
+  } catch (error) {
+    console.log(error)
+  }
+})
 </script>
 
 <template>
@@ -95,9 +108,10 @@ const logout = async () => {
                 Vcards
               </router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Transactions' }"
-                :to="{ name: 'Transactions' }">
+            <li class="nav-item" v-for="transaction in userTransactions" :key="transaction.id">
+              <router-link class="nav-link"
+                :class="{ active: $route.name == 'Transactions' && $route.params.id == transaction.id }"
+                :to="{ name: 'Transactions', params: { id: transaction.id } }">
                 <i class="bi bi-caret-right"></i>
                 Transactions
               </router-link>

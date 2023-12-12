@@ -4,7 +4,8 @@ import HomeView from '../views/HomeView.vue'
 import Dashboard from '../components/Dashboard.vue'
 import Vcards from '../components/Vcards.vue'
 import Login from '../components/auth/Login.vue'
-import Transactions from '../components/Transactions.vue'
+import Transactions from '../components/Transactions/Transactions.vue'
+import Transaction from '../components/Transactions/Transaction.vue'
 import ChangePassword from '../components/auth/ChangePassword.vue'
 import Register from '../components/auth/Register.vue'
 import EditProfile from '../components/EditProfile.vue'
@@ -41,7 +42,19 @@ const router = createRouter({
     {
       path: '/transactions',
       name: 'Transactions',
-      component: Transactions
+      component: Transactions,
+    },
+    {
+      path: '/transactions/:id',
+      name: 'Transaction',
+      component: Transaction,
+      props: route => ({ id: parseInt(route.params.id) })
+    },
+    {
+      path: '/transactions/new',
+      name: 'NewTransaction',
+      component: Transaction,
+      props: { id: -1 }
     },
     {
       path: '/vcards',
