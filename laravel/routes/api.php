@@ -32,7 +32,8 @@ Route::get('vcards', [VcardController::class, 'index']);
 Route::get('transactions', [TransactionController::class, 'index']);
 
 Route::get('users/{user}', [UserController::class, 'show']);
-Route::get('vcards/{vcard}', [VcardController::class, 'show']);
+Route::get('vcards/{vcard}', [VcardController::class, 'show']); 
+Route::get('vcards/{vcard}/transactions', [TransactionController::class, 'getTransactionsOfVcard']);
 Route::get('transactions/{transaction}', [TransactionController::class, 'show']);
 
 Route::post('users', [UserController::class, 'store']);
@@ -41,6 +42,7 @@ Route::post('transactions', [TransactionController::class, 'store']);
 
 Route::put('users/{user}', [UserController::class, 'update']);
 Route::put('vcards/{vcard}', [VcardController::class, 'update']);
+Route::patch('vcards/{vcard}/balance', [VcardController::class, 'update_balance']);
 Route::put('transactions/{transaction}', [TransactionController::class, 'update']);
 
 Route::delete('users/{user}', [UserController::class, 'destroy']);

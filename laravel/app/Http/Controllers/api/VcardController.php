@@ -9,6 +9,7 @@ use App\Http\Resources\VcardResource;
 use App\Models\Vcard;
 
 use App\Http\Requests\StoreUpdateVcardRequest;
+use App\Http\Requests\UpdateBalanceVcardRequest;
 
 
 class VcardController extends Controller
@@ -35,5 +36,11 @@ class VcardController extends Controller
     public function destroy(Vcard $vcard) {
       $vcard->delete();
       return response()->json();
+    }
+
+    public function update_balance(UpdateBalanceVcardRequest $request, Vcard $vcard) {
+      $vcard->balance = $request->validated()['balance'];
+      $vcard->save();
+      return new VcardResource($vcard);
     }
 }

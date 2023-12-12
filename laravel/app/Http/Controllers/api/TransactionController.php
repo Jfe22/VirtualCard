@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Transaction;
+use App\Models\Vcard;
 use App\Http\Resources\TransactionResource;
 
 use App\Http\Requests\StoreUpdateTransactionRequest;
@@ -35,6 +36,10 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction) {
       $transaction->delete();
       return response()->json();
+    }
+
+    public function getTransactionsOfVcard(Vcard $vcard) {
+      return TransactionResource::collection($vcard->transactions);
     }
 
 }
