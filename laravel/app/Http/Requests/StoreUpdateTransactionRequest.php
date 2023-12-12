@@ -22,7 +22,7 @@ class StoreUpdateTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-          'id' => 'required|numeric',
+          //'id' => 'required|numeric',
           'vcard' => 'required|string|exists:vcards,phone_number',
           'date' => 'required|date',
           'datetime' => 'required|date',

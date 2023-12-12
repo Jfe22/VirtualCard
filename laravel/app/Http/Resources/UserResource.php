@@ -16,6 +16,7 @@ class UserResource extends JsonResource
     {
         //return parent::toArray($request);
         return [
+          'user_type' => $this->user_type,
           'username' => $this->username,
           'name' => $this->name,
           'email' => $this->email,
