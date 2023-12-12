@@ -18,8 +18,6 @@ class UserController extends Controller
 
     public function show_me(Request $request) {
       error_log($request);
-      //error_log("====================================");
-      //error_log($request->user());
       return new UserResource($request->user());
     }
 

@@ -22,6 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:api')->group(function () {
+  Route::post('logout', [AuthController::class, 'logout']);
+  Route::get('users/me', [UserController::class, 'show_me']);
+});
+
 Route::get('users', [UserController::class, 'index']);
 Route::get('vcards', [VcardController::class, 'index']);
 Route::get('transactions', [TransactionController::class, 'index']);
@@ -44,9 +49,6 @@ Route::delete('transactions/{transaction}', [TransactionController::class, 'dest
 
 Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware('auth:api')->group(function () {
-  Route::post('logout', [AuthController::class, 'logout']);
-  Route::get('users/me', [UserController::class, 'show_me']);
 
 
   // dont delete yet
@@ -58,4 +60,3 @@ Route::middleware('auth:api')->group(function () {
   Route::patch('users/{user}/password', [UserController::class, 'update_password'])
     ->middleware('can:updatePassword,user');
   */
-});

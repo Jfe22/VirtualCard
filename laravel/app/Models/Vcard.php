@@ -45,9 +45,10 @@ class Vcard extends Model
     return $this->hasMany(Category::class, 'category_id');
   }
 
-  public function getRouteKeyName()
-  {
-    return 'phone_number';
-  }
+
+
+  protected $primaryKey = 'phone_number';
+  public $incrementing = false;
+  protected $keyType = 'string';
 
 }

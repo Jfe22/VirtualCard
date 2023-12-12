@@ -21,6 +21,7 @@
     description: ''
   })
 
+
   const loadTransactions = async () => {
     try {
       const response = await axios.get('transactions')
@@ -32,9 +33,7 @@
   }
 
 
-
   const emit = defineEmits(['registerNewTransaction'])
-
 
   const registerNewTransaction = async () => {
     try {
@@ -47,7 +46,7 @@
       router.back()
     } catch (error) {
       console.log(error)
-      toast.error('error while registering!')
+      toast.error('error while registering the transaction!')
     }
   }
 
