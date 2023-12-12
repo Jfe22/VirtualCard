@@ -3,7 +3,6 @@ import { RouterLink, RouterView } from 'vue-router'
 import axios from 'axios';
 import { useToast } from 'vue-toastification'
 import { useUserStore } from './stores/user.js'
-import { onMounted } from 'vue';
 
 const toast = useToast()
 const userStore = useUserStore()
@@ -16,12 +15,6 @@ const logout = async () => {
     toast.error('There was a problem logging out of the application!')
   }
 }
-
-onMounted(() => {
-  console.log('App.vue mounted')
-  console.log(userStore)
-})
-
 </script>
 
 <template>
@@ -37,7 +30,7 @@ onMounted(() => {
       </button>
 
       <div class="collapse navbar-collapse justify-content-end">
-        <ul class="navbar-nav" >
+        <ul class="navbar-nav">
           <li class="nav-item">
             <router-link class="nav-link" :class="{ active: $route.name === 'Register' }" :to="{ name: 'Register' }">
               <i class="bi bi-bi bi-person-check-fill"></i>
@@ -50,7 +43,7 @@ onMounted(() => {
               Login
             </router-link>
           </li>
-          <li class="nav-item dropdown" v-if="login"> //tirar o v-if se preciso
+          <li class="nav-item dropdown"> //v-if="login"
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
               <img :src="userStore.userPhotoUrl" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
@@ -58,11 +51,10 @@ onMounted(() => {
             </a>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <router-link :class="{ active: $route.name === 'Profile' }" :to="{ name: 'Profile' }">
-                  <a class="dropdown-item">
-                    <i class="bi bi-person-square"></i>
-                    Profile
-                  </a>
+                <router-link class="dropdown-item" :class="{ active: $route.name == 'User' && $route.params.id == 1 }"
+                  :to="{ name: 'User', params: { id: 1 } }">
+                  <i class="bi bi-person-circle"></i>
+                  Profile
                 </router-link>
               </li>
               <li>
@@ -86,9 +78,9 @@ onMounted(() => {
     </div>
   </nav>
 
-  <div class="container-fluid" >
+  <div class="container-fluid">
     <div class="row">
-      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" v-if="login"> //tirar caso login n funcione
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"> //v-if="login"
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
@@ -118,13 +110,12 @@ onMounted(() => {
               </router-link>
             </li>
             <li class="nav-item">
-                <i class="bi bi-caret-right"></i>
-                Statistics    
+              <i class="bi bi-caret-right"></i>
+              Statistics
             </li>
           </ul>
         </div>
       </nav>
-
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <router-view></router-view>
       </main>

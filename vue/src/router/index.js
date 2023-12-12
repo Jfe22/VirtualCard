@@ -7,9 +7,10 @@ import Login from '../components/auth/Login.vue'
 import Transactions from '../components/Transactions.vue'
 import ChangePassword from '../components/auth/ChangePassword.vue'
 import Register from '../components/auth/Register.vue'
-import Profile from '../components/Profile.vue'
 import EditProfile from '../components/EditProfile.vue'
 import Categories from '../components/Categories.vue'
+import User from "../components/users/User.vue"
+import Users from "../components/users/Users.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,7 +41,7 @@ const router = createRouter({
     {
       path: '/transactions',
       name: 'Transactions',
-      component: Transactions 
+      component: Transactions
     },
     {
       path: '/vcards',
@@ -58,11 +59,6 @@ const router = createRouter({
       component: Register
     },
     {
-      path: '/profile',
-      name: 'Profile',
-      component: Profile
-    },
-    {
       path: '/editprofile',
       name: 'EditProfile',
       component: EditProfile
@@ -72,7 +68,19 @@ const router = createRouter({
       name: 'Categories',
       component: Categories
     },
-
+    {
+      path: '/users',
+      name: 'Users',
+      component: Users,
+    },
+    {
+      path: '/users/:id',
+      name: 'User',
+      component: User,
+      //props: true
+      // Replaced with the following line to ensure that id is a number
+      props: route => ({ id: parseInt(route.params.id) })
+    }, 
   ]
 })
 
