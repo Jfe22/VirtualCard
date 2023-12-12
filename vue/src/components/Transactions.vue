@@ -1,18 +1,16 @@
 <script setup>
-
   import axios from 'axios'
   import { ref, onMounted } from 'vue'
 
   const transactions = ref([])
-
   const newTransactionParams = ref({
     id: '',   //como chegar ao metodo do lara que gera next id? 
-    vcard: '', 
-    date: '', 
+    vcard: '',
+    date: '',
     datetime: '',
     type: '',
-    old_balance:'',
-    new_balance: '', 
+    old_balance: '',
+    new_balance: '',
     payment_type: '',
     payment_reference: '',
     pair_transaction: '',
@@ -20,7 +18,6 @@
     category_id: '',
     description: ''
   })
-
 
   const loadTransactions = async () => {
     try {
@@ -32,9 +29,7 @@
     }
   }
 
-
   const emit = defineEmits(['registerNewTransaction'])
-
   const registerNewTransaction = async () => {
     try {
       const response = await axios.post('transactions', newTransactionParams.value)
@@ -46,16 +41,13 @@
       router.back()
     } catch (error) {
       console.log(error)
-      toast.error('error while registering the transaction!')
+      toast.error('error while registering!')
     }
   }
-
-
 
   onMounted(() => {
     loadTransactions()
   })
-
 </script>
 
 <template>
@@ -73,15 +65,23 @@
       </thead>
       <tbody>
         <tr v-for="transaction in transactions" :key="transactions.id">
-          <th scope="row">{{ transactions.id}}</th>
+          <th scope="row">{{ transactions.id }}</th>
           <td>{{ transaction.value }}</td>
           <td>{{ transaction.payment_type }}</td>
           <td>{{ transaction.payment_reference }}</td>
           <td>{{ transaction.type }}</td>
-          <td>{{ transaction.description }}</td> 
+          <td>{{ transaction.description }}</td>
         </tr>
       </tbody>
     </table>
   </div>
+  <nav>
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+  </nav>
 </template>
-

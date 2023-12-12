@@ -24,7 +24,6 @@ onMounted(() => {
 
 </script>
 
-
 <template>
   <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top flex-md-nowrap p-0 shadow">
     <div class="container-fluid">
@@ -38,7 +37,7 @@ onMounted(() => {
       </button>
 
       <div class="collapse navbar-collapse justify-content-end">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" >
           <li class="nav-item">
             <router-link class="nav-link" :class="{ active: $route.name === 'Register' }" :to="{ name: 'Register' }">
               <i class="bi bi-bi bi-person-check-fill"></i>
@@ -51,7 +50,7 @@ onMounted(() => {
               Login
             </router-link>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" v-if="login"> //tirar o v-if se preciso
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
               <img :src="userStore.userPhotoUrl" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
@@ -59,7 +58,12 @@ onMounted(() => {
             </a>
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <a class="dropdown-item" href="#"><i class="bi bi-person-square"></i>Profile</a>
+                <router-link :class="{ active: $route.name === 'Profile' }" :to="{ name: 'Profile' }">
+                  <a class="dropdown-item">
+                    <i class="bi bi-person-square"></i>
+                    Profile
+                  </a>
+                </router-link>
               </li>
               <li>
                 <router-link :class="{ active: $route.name === 'ChangePassword' }" :to="{ name: 'ChangePassword' }">
@@ -82,9 +86,9 @@ onMounted(() => {
     </div>
   </nav>
 
-  <div class="container-fluid">
+  <div class="container-fluid" >
     <div class="row">
-      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse" v-if="login"> //tirar caso login n funcione
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
@@ -114,61 +118,10 @@ onMounted(() => {
               </router-link>
             </li>
             <li class="nav-item">
-              
                 <i class="bi bi-caret-right"></i>
-                Statistics
-              
+                Statistics    
             </li>
-
           </ul>
-
-          <div class="d-block d-md-none">
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>User</span>
-            </h6>
-            <ul class="nav flex-column mb-2">
-              <li class="nav-item">
-                <router-link class="nav-link" :class="{ active: $route.name === 'Register' }" :to="{ name: 'Register' }">
-                  <i class="bi bi-box-arrow-in-right"></i>
-                  Register
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" :class="{ active: $route.name === 'Login' }" :to="{ name: 'Login' }">
-                  <i class="bi bi-box-arrow-in-right"></i>
-                  Login
-                </router-link>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  <img :src="userStore.userPhotoUrl" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
-                  <span class="avatar-text">{{ userStore.userName }}</span>
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
-                  <li>
-                    <a class="dropdown-item" href="#">
-                      <i class="bi bi-person-square"></i>Profile</a>
-                  </li>
-                  <li class="dropdown-item">
-                    <router-link :class="{ active: $route.name === 'ChangePassword' }" :to="{ name: 'ChangePassword' }">
-                      <i class="bi bi-key-fill"></i>
-                      Change password
-                    </router-link>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-                  <li>
-                    <a class="dropdown-item" @click.prevent="logout">
-                      <i class="bi bi-arrow-right"></i>Logout
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-
         </div>
       </nav>
 
