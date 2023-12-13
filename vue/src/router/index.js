@@ -5,7 +5,7 @@ import Dashboard from '../components/Dashboard.vue'
 import Vcards from '../components/Vcards.vue'
 import Login from '../components/auth/Login.vue'
 import Transactions from '../components/Transactions/Transactions.vue'
-import Transaction from '../components/Transactions/Transaction.vue'
+import Transaction from "../components/Transactions/Transaction.vue"
 import ChangePassword from '../components/auth/ChangePassword.vue'
 import Register from '../components/auth/Register.vue'
 import Categories from '../components/Categories.vue'

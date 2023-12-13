@@ -24,8 +24,6 @@ const credentials = ref({
 const emit = defineEmits(['register'])
 
 const register = async () => {
-  //to-do
-
   try {
     const response = await axios.post('vcards', credentials.value)
     console.log(response)
@@ -36,7 +34,7 @@ const register = async () => {
   } catch (error) {
     console.log(error)
     toast.error('error while registering!')
-  
+
   }
 }
 
@@ -73,7 +71,8 @@ const register = async () => {
     <div class="mb-3">
       <div class="mb-3">
         <label for="inputConfirmation_code" class="form-label">Confirmation code</label>
-        <input type="password" class="form-control" id="inputConfirmation_code" required v-model="credentials.confirmation_code">
+        <input type="password" class="form-control" id="inputConfirmation_code" required
+          v-model="credentials.confirmation_code">
       </div>
     </div>
 

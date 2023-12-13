@@ -11,11 +11,12 @@ const router = useRouter()
 
 const newTransaction = () => {
   return {
-    id: '',   //como chegar ao metodo do lara que gera next id? 
+    id: '',   
     vcard: '',
     date: '',
     datetime: '',
     type: '',
+    value: '',
     old_balance: '',
     new_balance: '',
     payment_type: '',
@@ -147,6 +148,6 @@ onMounted(async () => {
   <confirmation-dialog ref="confirmationLeaveDialog" confirmationBtn="Discard changes and leave"
     msg="Do you really want to leave? You have unsaved changes!" @confirmed="leaveConfirmed">
   </confirmation-dialog>
-  <ProjectDetail :operationType="operation" :project="project" :users="users" :errors="errors" @save="save"
-    @cancel="cancel"></ProjectDetail>
+  <transaction-detail :transaction="transaction" :operationType="operation" :users="users" :errors="errors" @save="save"
+    @cancel="cancel"></transaction-detail>
 </template>

@@ -115,10 +115,10 @@ onMounted(async () => {
                 Vcards
               </router-link>
             </li>
-            <li class="nav-item" v-for="transaction in userTransactions" :key="transaction.id">
+            <li class="nav-item" ><!--v-for="transaction in userTransactions" :key="transaction.id"-->
               <router-link class="nav-link"
-                :class="{ active: $route.name == 'Transactions' && $route.params.id == transaction.id }"
-                :to="{ name: 'Transactions', params: { id: transaction.id } }">
+                :class="{ active: $route.name == 'Transactions'  }" 
+                :to="{ name: 'Transactions' }"> <!--&& $route.params.id == transaction.id // , params: { id: transaction.id }-->
                 <i class="bi bi-caret-right"></i>
                 Transactions
               </router-link>

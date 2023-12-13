@@ -1,9 +1,10 @@
 <script setup>
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
-import {useRouter} from 'vue-router'
-import { ref,computed ,onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
 import TransactionsTable from './TransactionsTable.vue'
+import { useUserStore } from '../../stores/user.js'
 
 const toast = useToast()
 const router = useRouter()
@@ -12,6 +13,8 @@ const transactions = ref([])
 const users = ref([])
 const transactionToDelete = ref(null)
 const deleteConfirmationDialog = ref(null)
+
+const userStore = useUserStore();
 
 const loadTransactions = async () => {
   try {
@@ -56,7 +59,7 @@ const deleteTransactionConfirmed = async () => {
   } catch (error) {
     console.log(error)
     toast.error(`It was not possible to delete Transaction ${transactionToDeleteDescription.value}!`)
-  }  
+  }
 }
 
 onMounted(() => {
@@ -67,8 +70,11 @@ onMounted(() => {
 <template>
   <div class="mx-2 mt-2">
     <h1>Transactions History</h1>
-    <button type="button" class="btn btn-success px-4 btn-addtask" @click="addTransaction"><i
-        class="bi bi-xs bi-plus-circle"></i>&nbsp; Add Transaction</button>
+    <button type="button" class="btn btn-success px-4 btn-addtask">
+      <router-link class="nav-link" :to="{ name: 'NewTransaction' }">
+        Add Transaction
+      </router-link>
+    </button>
   </div>
   <div>
     <hr>
@@ -91,19 +97,11 @@ onMounted(() => {
           <td>{{ transaction.type }}</td>
           <td>{{ transaction.description }}</td>
           <td>
-            <button type="button" class="btn btn-success px-4 btn-editTransaction" @click="editTransaction">&nbsp;Edit</button>
+            <button type="button" class="btn btn-success px-4 btn-editTransaction"
+              @click="editTransaction">&nbsp;Edit</button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <nav>
-    <ul class="pagination">
-      <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
-  </nav>
 </template>

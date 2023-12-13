@@ -31,9 +31,9 @@ onMounted(() => {
           <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Balance</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-          <th scope="col"></th>
+          <th scope="col">Editar</th>
+          <th scope="col">Bloquear</th>
+          <th scope="col">Eliminar</th>
         </tr>
       </thead>
       <tbody>
