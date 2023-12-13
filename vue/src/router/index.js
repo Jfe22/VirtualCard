@@ -12,6 +12,7 @@ import Categories from '../components/Categories.vue'
 import User from "../components/users/User.vue"
 import Users from "../components/users/Users.vue"
 import Statistics from "../components/Statistics.vue"
+import EditVcards from "../components/EditVcards.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -85,6 +86,11 @@ const router = createRouter({
       path: '/users',
       name: 'Users',
       component: Users,
+    },
+    {
+      path: '/editvcards',
+      name: 'EditVcards',
+      component: EditVcards
     },
     {
       path: '/users/:id',

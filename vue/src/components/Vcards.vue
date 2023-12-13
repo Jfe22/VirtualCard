@@ -42,7 +42,11 @@ onMounted(() => {
           <td>{{ vCard.name }}</td>
           <td>{{ vCard.email }}</td>
           <td>{{ vCard.balance }}</td>
-          <td><button type="button" class="btn btn-success px-4 btn-editVcard" @click="editVcard">&nbsp;Edit</button></td>
+          <td><button type="button" class="btn btn-success px-4 btn-editVcard">
+            <router-link class="nav-link" :class="{ active: $route.name === 'EditVcards' }" :to="{ name: 'EditVcards' }">
+               <i class="bi bi-pencil"></i>&nbsp;
+            </router-link>
+        </button></td>
           <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="blockVcard">&nbsp;Block</button></td>
           <td><button type="button" class="btn btn-danger px-4 btn-deleteVcard" @click="deleteVcard">&nbsp;Delete</button></td>
         </tr>
