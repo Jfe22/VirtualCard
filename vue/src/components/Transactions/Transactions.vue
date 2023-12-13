@@ -87,6 +87,7 @@ onMounted(() => {
           <th scope="col">Classification</th>
           <th scope="col">Description</th>
           <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -99,6 +100,10 @@ onMounted(() => {
           <td>
             <button type="button" class="btn btn-success px-4 btn-editTransaction"
               @click="editTransaction">&nbsp;Edit</button>
+          </td>
+          <td>
+            <button type="button" class="btn btn-danger px-4 btn-deleteTransaction"
+              @click="deleteTransaction">&nbsp;Delete</button>
           </td>
         </tr>
       </tbody>

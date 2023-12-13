@@ -31,9 +31,9 @@ onMounted(() => {
           <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Balance</th>
-          <th scope="col">Editar</th>
-          <th scope="col">Bloquear</th>
-          <th scope="col">Eliminar</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -42,9 +42,9 @@ onMounted(() => {
           <td>{{ vCard.name }}</td>
           <td>{{ vCard.email }}</td>
           <td>{{ vCard.balance }}</td>
-          <td><button type="button" class="btn btn-success px-4 btn-editVcard" @click="editVcard"><i class="bi bi-pencil"></i>&nbsp;</button></td>
-          <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="blockVcard"><i class="bi bi-ban"></i>&nbsp;</button></td>
-          <td><button type="button" class="btn btn-danger px-4 btn-deleteVcard" @click="deleteVcard"><i class="bi bi-trash"></i>&nbsp;</button></td>
+          <td><button type="button" class="btn btn-success px-4 btn-editVcard" @click="editVcard">&nbsp;Edit</button></td>
+          <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="blockVcard">&nbsp;Block</button></td>
+          <td><button type="button" class="btn btn-danger px-4 btn-deleteVcard" @click="deleteVcard">&nbsp;Delete</button></td>
         </tr>
       </tbody>
     </table>
