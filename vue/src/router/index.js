@@ -12,6 +12,7 @@ import EditProfile from '../components/EditProfile.vue'
 import Categories from '../components/Categories.vue'
 import User from "../components/users/User.vue"
 import Users from "../components/users/Users.vue"
+import Statistics from "../components/Statistics.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard
+    },
+    {
+      path: '/stats',
+      name: 'Statistics',
+      component: Statistics
     },
     {
       path: '/login',

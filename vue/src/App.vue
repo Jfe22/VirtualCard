@@ -124,8 +124,11 @@ onMounted(async () => {
               </router-link>
             </li>
             <li class="nav-item">
-              <i class="bi bi-caret-right"></i>
-              Statistics
+              <router-link class="nav-link" :class="{ active: $route.name === 'Statistics' }"
+                :to="{ name: 'Statistics' }">
+                <i class="bi bi-caret-right"></i>
+                Statistics
+              </router-link>
             </li>
           </ul>
         </div>

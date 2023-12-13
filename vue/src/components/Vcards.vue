@@ -33,6 +33,7 @@ onMounted(() => {
           <th scope="col">Balance</th>
           <th scope="col"></th>
           <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -41,12 +42,14 @@ onMounted(() => {
           <td>{{ vCard.name }}</td>
           <td>{{ vCard.email }}</td>
           <td>{{ vCard.balance }}</td>
-          <td><button>Editar</button></td>
-          <td><button>Eliminar</button></td>
+          <td><button type="button" class="btn btn-success px-4 btn-editVcard" @click="editVcard"><i class="bi bi-pencil"></i>&nbsp;</button></td>
+          <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="blockVcard"><i class="bi bi-ban"></i>&nbsp;</button></td>
+          <td><button type="button" class="btn btn-danger px-4 btn-deleteVcard" @click="deleteVcard"><i class="bi bi-trash"></i>&nbsp;</button></td>
         </tr>
       </tbody>
     </table>
   </div>
   
 </template>
+
 

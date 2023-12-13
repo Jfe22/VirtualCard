@@ -91,7 +91,7 @@ onMounted(() => {
           <td>{{ transaction.type }}</td>
           <td>{{ transaction.description }}</td>
           <td>
-            <button type="button" class="btn btn-success px-4 btn-addtask" @click="editTransaction">&nbsp;Edit</button>
+            <button type="button" class="btn btn-success px-4 btn-editTransaction" @click="editTransaction">&nbsp;Edit</button>
           </td>
         </tr>
       </tbody>
@@ -107,9 +107,3 @@ onMounted(() => {
     </ul>
   </nav>
 </template>
-
-<style scoped>
-.btn-addtask {
-  margin-top: 1.85rem;
-}
-</style>
