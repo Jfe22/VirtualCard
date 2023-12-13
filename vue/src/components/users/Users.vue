@@ -32,7 +32,7 @@ onMounted (() => {
 </script>
 
 <template>
-  <h3 class="mt-5 mb-3">Team Members</h3>
+  <h1 class="mt-5 mb-3">Users</h1>
   <hr>
   <user-table
     :users="users"

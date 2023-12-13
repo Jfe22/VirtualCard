@@ -8,7 +8,6 @@ import Transactions from '../components/Transactions/Transactions.vue'
 import Transaction from '../components/Transactions/Transaction.vue'
 import ChangePassword from '../components/auth/ChangePassword.vue'
 import Register from '../components/auth/Register.vue'
-import EditProfile from '../components/EditProfile.vue'
 import Categories from '../components/Categories.vue'
 import User from "../components/users/User.vue"
 import Users from "../components/users/Users.vue"
@@ -76,11 +75,6 @@ const router = createRouter({
       path: '/register',
       name: 'Register',
       component: Register
-    },
-    {
-      path: '/editprofile',
-      name: 'EditProfile',
-      component: EditProfile
     },
     {
       path: '/categories',

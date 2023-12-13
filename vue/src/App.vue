@@ -11,6 +11,7 @@ const userStore = useUserStore()
 const logout = async () => {
   if (await userStore.logout()) {
     toast.success('User has logged out of the application.')
+    delete axios.defaults.headers.common.Authorization
     router.push({ name: 'Login' })
   } else {
     toast.error('There was a problem logging out of the application!')
@@ -103,6 +104,12 @@ onMounted(async () => {
               </router-link>
             </li>
             <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name === 'Users' }" :to="{ name: 'Users' }">
+                <i class="bi bi-caret-right"></i>
+                Users
+              </router-link>
+            </li>
+            <li class="nav-item">
               <router-link class="nav-link" :class="{ active: $route.name === 'Vcards' }" :to="{ name: 'Vcards' }">
                 <i class="bi bi-caret-right"></i>
                 Vcards
@@ -114,13 +121,6 @@ onMounted(async () => {
                 :to="{ name: 'Transactions', params: { id: transaction.id } }">
                 <i class="bi bi-caret-right"></i>
                 Transactions
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Categories' }"
-                :to="{ name: 'Categories' }">
-                <i class="bi bi-caret-right"></i>
-                Categories
               </router-link>
             </li>
             <li class="nav-item">
