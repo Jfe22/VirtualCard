@@ -34,6 +34,7 @@ class VcardController extends Controller
     }
 
     public function destroy(Vcard $vcard) {
+      //verificar o saldo antes de apagar
       $vcard->delete();
       return response()->json();
     }
