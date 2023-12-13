@@ -9,15 +9,30 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+      'vcard',
+      'date',
+      'datetime',
+      'type',
+      'value',
+      'old_balance',
+      'new_balance',
+      'payment_type',
+      'payment_reference',
+      'pair_transaction',
+      'pair_vcard',
+      'category_id',
+      'description',
+    ];
 
     public function vcard()
     {
-        return $this->belongsTo(Vcard::class, 'phone_number');
+      return $this->belongsTo(Vcard::class, 'phone_number');
     }
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'id');
+      return $this->belongsTo(Category::class, 'id');
     }
 
 }
