@@ -46,15 +46,18 @@ class TransactionController extends Controller
       $transaction->old_balance = $vcard->balance; 
       if ($transaction->type == 'D')
         $transaction->new_balance = $transaction->old_balance - $transaction->value;
-        //chamar aqui o patch do vcard para atualizar o saldo?
       else
         $transaction->new_balance = $transaction->old_balance + $transaction->value;
-        //chamar aqui o patch do vcard para atualizar o saldo?
 
-      if ($transaction->payment_type == 'VCARD') {
-        //criar aqui a pair transaction?????
-        $transaction->pair_transaction = ($transaction->id) + 1 ;
+      //VcardController::update_balance($transaction->vcard, $transaction->new_balance);
+      //$vcard->balance = $transaction->new_balance;
+
+      if ($transaction->payment_type == 'VCARD' ) {
         $transaction->pair_vcard = $transaction->payment_reference;
+        if ($transaction->is_pair)
+          $transaction->pair_transaction = ($transaction->id) - 1 ;
+        else
+          $transaction->pair_transaction = ($transaction->id) + 1 ;
       }
 
       $transaction->save();

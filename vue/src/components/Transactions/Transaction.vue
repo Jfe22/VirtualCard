@@ -11,24 +11,26 @@ const router = useRouter()
 
 const newTransaction = () => {
   return {
-    id: '',   
+    //id: '',   
     vcard: '',
-    date: '',
-    datetime: '',
+    //date: '',
+    //datetime: '',
     type: '',
     value: '',
-    old_balance: '',
-    new_balance: '',
+    //old_balance: '',
+    //new_balance: '',
     payment_type: '',
     payment_reference: '',
-    pair_transaction: '',
-    pair_vcard: '',
+    //pair_transaction: '',
+    //pair_vcard: '',
     category_id: '',
-    description: ''
+    description: '',
+    is_pair: '',
   }
 }
 
 const transaction = ref(newTransaction())
+const pair_transaction = ref(newTransaction())
 const users = ref([])
 const errors = ref(null)
 const confirmationLeaveDialog = ref(null)
@@ -56,8 +58,40 @@ const save = async () => {
   errors.value = null
   if (operation.value == 'insert') {
     try {
+
+
+      //creates the normal transaction
+      transaction.value.is_pair = false;
       const response = await axios.post('transactions', transaction.value)
       transaction.value = response.data.data
+
+      //patch the user vcard balance
+      const responsePatch = await axios.patch('vcards/' + transaction.value.vcard + '/balance', transaction.value.new_balance)
+
+      //creates the pair transaction
+      if (transaction.value.payment_type == 'VCARD') {
+        pair_transaction.value.vcard = transaction.value.pair_vcard;
+
+        if (transaction.value.type == 'D')
+          pair_transaction.value.type = 'C'
+        else 
+          pair_transaction.value.type = 'D'
+
+        pair_transaction.value.value = transaction.value.value
+        pair_transaction.value.payment_type = 'VCARD'
+        pair_transaction.value.payment_reference = transaction.value.vcard
+        pair_transaction.value.is_pair = true
+
+        const responsePairT = await axios.post('transactions', pair_transaction.value)
+        pair_transaction.value = responsePairT.data.data
+
+        //patch the pair vcard balance
+        const responsePatchPair = await axios.patch('vcards/' + pair_transaction.value.vcard + '/balance', pair_transaction.value.new_balance)
+      }
+
+
+
+
       originalValueStr = JSON.stringify(transaction.value)
       toast.success('transaction #' + transaction.value.id + ' was created successfully.')
       router.back()
