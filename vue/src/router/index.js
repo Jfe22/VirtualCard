@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 
 import Dashboard from '../components/Dashboard.vue'
-import Vcards from '../components/Vcards.vue'
+import Vcards from '../components/vCards/Vcards.vue'
 import Login from '../components/auth/Login.vue'
 import Transactions from '../components/Transactions/Transactions.vue'
 import Transaction from "../components/Transactions/Transaction.vue"
@@ -12,7 +12,7 @@ import Categories from '../components/Categories.vue'
 import User from "../components/users/User.vue"
 import Users from "../components/users/Users.vue"
 import Statistics from "../components/Statistics.vue"
-import EditVcards from "../components/EditVcards.vue"
+import EditVcards from "../components/vCards/EditVcards.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +68,11 @@ const router = createRouter({
       component: Vcards 
     },
     {
+      path: '/editvcards',
+      name: 'EditVcards',
+      component: EditVcards
+    },
+    {
       path: '/changepassword',
       name: 'ChangePassword',
       component: ChangePassword 
@@ -86,11 +91,6 @@ const router = createRouter({
       path: '/users',
       name: 'Users',
       component: Users,
-    },
-    {
-      path: '/editvcards',
-      name: 'EditVcards',
-      component: EditVcards
     },
     {
       path: '/users/:id',
