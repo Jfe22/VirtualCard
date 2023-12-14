@@ -44,82 +44,40 @@ const cancel = () => {
 
 <template>
   <form class="row g-3 needs-validation" novalidate @submit.prevent="save">
-    <h3 class="mt-5 mb-3">User #{{ editingUser.id }}</h3>
+    <h3 class="mt-5 mb-3">{{ editingUser.name }} vCard</h3>
     <hr />
     <div class="d-flex flex-wrap justify-content-between">
       <div class="w-75 pe-4">
         <div class="mb-3">
           <label for="inputName" class="form-label">Name</label>
-          <input
-            type="text"
-            class="form-control"
-            :class="{ 'is-invalid': errors ? errors['name'] : false }"
-            id="inputName"
-            placeholder="User Name"
-            required
-            v-model="editingUser.name"
-          />
+          <input type="text" class="form-control" :class="{ 'is-invalid': errors ? errors['name'] : false }"
+            id="inputName" placeholder="User Name" required v-model="editingUser.name" />
           <field-error-message :errors="errors" fieldName="name"></field-error-message>
         </div>
-
+        <div class="mb-3">
+          <label for="inputphone_number" class="form-label">Phone Number</label>
+          <input type="text" class="form-control" :class="{ 'is-invalid': errors ? errors['phone_number'] : false }"
+            id="inputphone_number" placeholder="Phone number" required v-model="editingUser.phone_number" />
+          <field-error-message :errors="errors" fieldName="phone_number"></field-error-message>
+        </div>
         <div class="mb-3 px-1">
           <label for="inputEmail" class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            :class="{ 'is-invalid': errors ? errors['email'] : false }"
-            id="inputEmail"
-            placeholder="Email"
-            required
-            v-model="editingUser.email"
-          />
+          <input type="email" class="form-control" :class="{ 'is-invalid': errors ? errors['email'] : false }"
+            id="inputEmail" placeholder="Email" required v-model="editingUser.email" />
           <field-error-message :errors="errors" fieldName="email"></field-error-message>
         </div>
         <div class="d-flex ms-1 mt-4 flex-wrap justify-content-between">
           <div class="mb-3 me-3 flex-grow-1">
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                :class="{ 'is-invalid': errors ? errors['type'] : false }"
-                type="checkbox"
-                true-value="A"
-                false-value="M"
-                v-model="editingUser.type"
-                id="inputType"
-              />
-              <label class="form-check-label" for="inputType">
-                User is Administrator
-              </label>
-            </div>
-            <field-error-message :errors="errors" fieldName="type"></field-error-message>
+            <label for="inputpassword" class="form-label">Password</label>
+            <input type="password" class="form-control" :class="{ 'is-invalid': errors ? errors['password'] : false }"
+              id="inputpassword" placeholder="Password" required v-model="editingUser.password" />
+            <field-error-message :errors="errors" fieldName="password"></field-error-message>
           </div>
-          <div class="mb-3 ms-xs-3 flex-grow-1">
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                :class="{ 'is-invalid': errors ? errors['gender'] : false }"
-                type="radio"
-                name="radioGender"
-                value="M"
-                required
-                v-model="editingUser.gender"
-                id="inputGenderM"
-              />
-              <label class="form-check-label" for="inputGenderM">Masculino</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input
-                class="form-check-input"
-                :class="{ 'is-invalid': errors ? errors['gender'] : false }"
-                type="radio"
-                name="radioGender"
-                value="F"
-                v-model="editingUser.gender"
-                id="inputGenderF"
-              />
-              <label class="form-check-label" for="inputGenderF">Feminino</label>
-            </div>
-            <field-error-message :errors="errors" fieldName="gender"></field-error-message>
+          <div class="mb-3 me-3 flex-grow-1">
+            <label for="inputconfirmation_code" class="form-label">Confirmation Code</label>
+            <input type="confirmation_code" class="form-control" :class="{ 'is-invalid': errors ? errors['confirmation_code'] : false }"
+              id="inputconfirmation_code" placeholder="" required v-model="editingUser.confirmation_code" />
+            <field-error-message :errors="errors" fieldName="confirmation_code"></field-error-message>
           </div>
         </div>
       </div>
