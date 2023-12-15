@@ -2,10 +2,13 @@
 
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
+import { useUserStore } from '../../stores/user.js';
 
 const vCards = ref([])
+const userStore = useUserStore()
 
 const loadVcards = async () => {
+  //only for admins?
   try {
     const response = await axios.get('vcards')
     console.log(response)
@@ -14,6 +17,34 @@ const loadVcards = async () => {
     console.error(error)
   }
 }
+
+const deleteVcard = async () => {
+  if (userStore.user_type == 'A') {
+    try {
+      const response = await axios.delete('vcards/' + vCard.phone_number)
+      console.log(response)
+      loadVcards()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  
+}
+
+const blockVcard = async () => {
+  if (userStore.user_type == 'A') {
+    try {
+      //end point still TODO
+      const response = await axios.patch('vcards/' + vCard.phone_number + '/block')
+      console.log(response)
+      loadVcards()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
+
+
 
 onMounted(() => {
   loadVcards()

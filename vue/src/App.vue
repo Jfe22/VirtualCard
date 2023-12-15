@@ -22,8 +22,9 @@ const userTransactions = ref([])
 
 onMounted(async () => {
   try {
-    const userId = 1
-    const response = await axios.get("users/" + userId + "/transactions")
+    //const userId = 1
+    const userId = userStore.userId
+    const response = await axios.get("vcards/" + userId + "/transactions")
     userTransactions.value = response.data.data
   } catch (error) {
     console.log(error)
