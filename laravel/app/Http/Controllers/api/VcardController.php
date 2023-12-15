@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\api\TransactionController;
 use Illuminate\Http\Request;
 
 use App\Http\Resources\VcardResource;
@@ -34,8 +35,18 @@ class VcardController extends Controller
     }
 
     public function destroy(Vcard $vcard) {
-      //verificar o saldo antes de apagar
-      $vcard->delete();
+      if ($vcard->balance != 0)
+        return response()->json(['error' => 'Não é possível apagar um cartão com saldo diferente de zero.'], 403);
+
+      if ($vcard->transactions()->count() > 0) {
+        foreach ($vcard->transactions as $transaction) {
+          TransactionController::destroy($transaction);
+        }
+        $vcard->delete();
+
+      } else
+        $vcard->forceDelete();
+
       return response()->json();
     }
 

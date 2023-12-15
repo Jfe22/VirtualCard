@@ -39,6 +39,12 @@ class UserController extends Controller
       $user->delete();
       return response()->json();
     }
+
+    public function update_password(UpdatePasswordUserRequest $request, User $user) {
+      $user->password = bcrypt($request->validated()['password']);
+      $user->save();
+      return new UserResource($user);
+    }
     
 
 

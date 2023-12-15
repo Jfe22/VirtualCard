@@ -8,7 +8,7 @@ class UserPolicy
 {
     /**
      * Create a new policy instance.
-     */
+
     public function __construct()
     {
         //
@@ -21,6 +21,7 @@ class UserPolicy
       return $user->user_type == "A";
     }
 
+     */
     //endpioints que ainda nao foram implementados
     public function view(User $user, User $model)
     {

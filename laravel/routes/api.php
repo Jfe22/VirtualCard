@@ -22,9 +22,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::post('login', [AuthController::class, 'login']);
+
 Route::middleware('auth:api')->group(function () {
   Route::post('logout', [AuthController::class, 'logout']);
   Route::get('users/me', [UserController::class, 'show_me']);
+
+  Route::get('users/{user}', [UserController::class, 'show'])
+    ->middleware('can:view,user');
+  Route::put('users/{user}', [UserController::class, 'update'])
+    ->middleware('can:update,user');
+  Route::patch('users/{user}/password', [UserController::class, 'update_password'])
+    ->middleware('can:updatePassword,user');
 });
 
 Route::get('users', [UserController::class, 'index']);
@@ -48,17 +58,3 @@ Route::put('transactions/{transaction}', [TransactionController::class, 'update'
 Route::delete('users/{user}', [UserController::class, 'destroy']);
 Route::delete('vcards/{vcard}', [VcardController::class, 'destroy']);
 Route::delete('transactions/{transaction}', [TransactionController::class, 'destroy']);
-
-Route::post('login', [AuthController::class, 'login']);
-
-
-
-  // dont delete yet
-  /*
-  Route::get('users/{user}', [UserController::class, 'show'])
-    ->middleware('can:view,user');
-  Route::put('users/{user}', [UserController::class, 'update'])
-    ->middleware('can:update,user');
-  Route::patch('users/{user}/password', [UserController::class, 'update_password'])
-    ->middleware('can:updatePassword,user');
-  */

@@ -37,11 +37,9 @@ class TransactionController extends Controller
       if($request->filled('description'))
         $transaction->description = $request->validated()['description'];
 
-
       $transaction->date = date('Y-m-d');
       $transaction->datetime = date('Y-m-d H:i:s');
 
-      //$transaction->old_balance = $transaction->vcard->balance;
       $vcard = Vcard::where('phone_number', $transaction->vcard)->first();
       $transaction->old_balance = $vcard->balance; 
       if ($transaction->type == 'D')
@@ -49,8 +47,6 @@ class TransactionController extends Controller
       else
         $transaction->new_balance = $transaction->old_balance + $transaction->value;
 
-      //VcardController::update_balance($transaction->vcard, $transaction->new_balance);
-      //$vcard->balance = $transaction->new_balance;
 
       if ($transaction->payment_type == 'VCARD' ) {
         $transaction->pair_vcard = $transaction->payment_reference;
