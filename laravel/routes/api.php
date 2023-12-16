@@ -53,6 +53,7 @@ Route::post('transactions', [TransactionController::class, 'store']);
 Route::put('users/{user}', [UserController::class, 'update']);
 Route::put('vcards/{vcard}', [VcardController::class, 'update']);
 Route::patch('vcards/{vcard}/balance', [VcardController::class, 'update_balance']);
+Route::patch('vcards/{vcard}/blocked', [VcardController::class, 'update_blocked']);
 Route::put('transactions/{transaction}', [TransactionController::class, 'update']);
 
 Route::delete('users/{user}', [UserController::class, 'destroy']);
