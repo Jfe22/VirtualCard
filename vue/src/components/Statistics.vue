@@ -27,10 +27,10 @@ onMounted(() => {
         userStore.loadUser();
 
         // Verifica se o utilizador é um administrador
-        isAdmin.value = userStore.user.type === 'admin';
+        isAdmin.value = userStore.user.user_type
 
         // Carrega estatísticas
-        if (!isAdmin.value) {
+        if (isAdmin.value == "A") {
             fetchVCardStats();
         }
     }
