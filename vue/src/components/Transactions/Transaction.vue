@@ -77,7 +77,11 @@ const save = async () => {
       transaction.value = response.data.data
 
       //patch the user vcard balance
-      const responsePatch = await axios.patch('vcards/' + transaction.value.vcard + '/balance', transaction.value.new_balance)
+      console.log(transaction.value)
+      const new_balance = {
+        "balance": transaction.value.new_balance
+      }
+      const responsePatch = await axios.patch('vcards/' + transaction.value.vcard + '/balance', new_balance)
 
       //creates the pair transaction
       if (transaction.value.payment_type == 'VCARD') {
@@ -97,7 +101,10 @@ const save = async () => {
         pair_transaction.value = responsePairT.data.data
 
         //patch the pair vcard balance
-        const responsePatchPair = await axios.patch('vcards/' + pair_transaction.value.vcard + '/balance', pair_transaction.value.new_balance)
+        const new_balance_pair = {
+          "balance": pair_transaction.value.new_balance
+        }
+        const responsePatchPair = await axios.patch('vcards/' + pair_transaction.value.vcard + '/balance', new_balance_pair)
       }
 
 
