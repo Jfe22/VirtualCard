@@ -7,7 +7,6 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import axios from 'axios'
-
 import App from './App.vue'
 import router from './router'
 
@@ -15,6 +14,8 @@ const app = createApp(App)
 
 const serverBaseUrl = 'http://localhost:8000'
 app.provide('serverBaseUrl', serverBaseUrl)
+
+app.provide('axios', axios);
 
 axios.defaults.baseURL = serverBaseUrl + '/api'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
