@@ -8,7 +8,7 @@ export const useUserStore = defineStore('user', () => {
   const user = ref(null)
   //----------- testing -------------
   const vcardNmr = computed(() => user.value?.username ?? -1)
-  const user_type = computed(() => user.value?.user_type)
+  const user_type = computed(() => user.value.user_type)
   //---------------------------------
   const userId = computed(() => user.value?.id ?? -1)
   const userName = computed(() => user.value?.name ?? 'Anonymous')

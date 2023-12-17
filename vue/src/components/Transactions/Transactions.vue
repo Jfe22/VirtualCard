@@ -2,7 +2,7 @@
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import TransactionsTable from './TransactionsTable.vue'
 import { useUserStore } from '../../stores/user.js'
 
@@ -15,6 +15,12 @@ const transactionToDelete = ref(null)
 const deleteConfirmationDialog = ref(null)
 
 const userStore = useUserStore();
+const socket = inject('socket')
+
+socket.on('newTransaction', (transaction) => {
+  console.log('websocket running')
+  transactions.value.push(transaction)
+})
 
 const loadTransactions = async () => {
   try {

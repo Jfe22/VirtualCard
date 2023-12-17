@@ -5,6 +5,7 @@ import "bootstrap"
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { io } from "socket.io-client"
 
 import axios from 'axios'
 import App from './App.vue'
@@ -16,6 +17,8 @@ const serverBaseUrl = 'http://localhost:8000'
 app.provide('serverBaseUrl', serverBaseUrl)
 
 app.provide('axios', axios);
+
+app.provide('socket', io("http://localhost:8080"))
 
 axios.defaults.baseURL = serverBaseUrl + '/api'
 axios.defaults.headers.common['Content-Type'] = 'application/json'

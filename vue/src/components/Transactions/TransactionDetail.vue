@@ -66,12 +66,12 @@ const cancel = () => {
         <select class="form-select" :class="{ 'is-invalid': errors ? errors['type'] : false }" id="inputpayment_type" required
           v-model="editingTransaction.payment_type">
           <option :value="null"></option>
-          <option value="V">vCard</option>
-          <option value="M">MBway</option>
-          <option value="P">Paypal</option>
-          <option value="I">IBAN</option>
-          <option value="B">MB</option>
-          <option value="S">VISA</option>
+          <option value="VCARD">vCard</option>
+          <option value="MBWAY">MBway</option>
+          <option value="PAYPAL">Paypal</option>
+          <option value="IBAN">IBAN</option>
+          <option value="MB">MB</option>
+          <option value="VISA">VISA</option>
         </select>
         <field-error-message :errors="errors" fieldName="payment_type"></field-error-message>
       </div>
