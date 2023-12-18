@@ -42,7 +42,6 @@ const deleteTransaction = async (transaction) => {
   if (userStore.user_type === 'A') {
     try {
       if (transaction && transaction.id) {
-        // Agora, podemos prosseguir com a exclusão usando o ID da transação
         const deleteResponse = await axios.delete(`transactions/${transaction.id}`);
         console.log(deleteResponse);
 

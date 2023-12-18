@@ -13,18 +13,11 @@ const userStore = useUserStore()
 
 const newTransaction = () => {
   return {
-    //id: '',   
     vcard: '',
-    //date: '',
-    //datetime: '',
     type: '',
     value: '',
-    //old_balance: '',
-    //new_balance: '',
     payment_type: '',
     payment_reference: '',
-    //pair_transaction: '',
-    //pair_vcard: '',
     category_id: '',
     description: '',
     is_pair: '',
@@ -36,8 +29,8 @@ const pair_transaction = ref(newTransaction())
 const users = ref([])
 const errors = ref(null)
 const confirmationLeaveDialog = ref(null)
-// devia estar numa transaction store??
 const socket = inject('socket')
+
 // String with the JSON representation after loading the transaction (new or edit)
 let originalValueStr = ''
 
@@ -63,13 +56,8 @@ const save = async () => {
   errors.value = null
   if (operation.value == 'insert') {
     try {
-
-
       //creates the normal transaction
       //transaction.value.vcard = userStore.userId
-      console.log('user store id val')
-      console.log(userStore.user.username)
-      console.log('user store id val')
       transaction.value.vcard = userStore.user.username
       transaction.value.is_pair = false
       transaction.value.type = 'D'
@@ -109,9 +97,7 @@ const save = async () => {
         const responsePatchPair = await axios.patch('vcards/' + pair_transaction.value.vcard + '/balance', new_balance_pair)
       }
 
-
       socket.emit('newTransaction', transaction.value)
-
 
       originalValueStr = JSON.stringify(transaction.value)
       toast.success('transaction #' + transaction.value.id + ' was created successfully.')

@@ -28,7 +28,6 @@ const register = async () => {
   try {
     const response = await axios.post('vcards', credentials.value)
     console.log(response)
-    //credentials.value = response.data.data
     toast.success('User ' + credentials.username + ' has registered successfully.')
     socket.emit('newVCard', response.data.data)
     router.back()
