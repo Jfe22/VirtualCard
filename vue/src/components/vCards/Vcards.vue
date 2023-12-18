@@ -105,7 +105,7 @@ onMounted(() => {
           <td>
             <button type="button" class="btn btn-success px-4 btn-editVcard">
               <router-link class="nav-link" :class="{ active: $route.name == 'User' && $route.params.id == 1 }" 
-              :to="{ name: 'User', params: { id: 1 } }"> <!--Mudar para id de cada vCard-->
+              :to="{ name: 'User', params: { id: 1 } }">
                 <i class="bi bi-pencil"></i>&nbsp;
               </router-link>
             </button>
