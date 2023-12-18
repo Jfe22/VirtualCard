@@ -13,6 +13,9 @@ const totalVCards = ref(0);
 const transactions = ref([]);
 const transactions30 = ref([]);
 const transactions30Sum = ref([]);
+const averageTransactionValue = ref(0);
+const minTransactionValue = ref(0);
+const maxTransactionValue = ref(0);
 
 const TotalBalance = async () => {
     try {
@@ -36,6 +39,90 @@ const TotalBalance = async () => {
         }
     } catch (error) {
         console.error(error);
+    }
+};
+
+const getAllTransactionsAvarage = async () => {
+    try {
+        const response = await axios.get('transactions');
+        transactions.value = response.data.data;
+
+        let totalValue = 0;
+        let validTransactionCount = 0;
+
+        for (const transaction of transactions.value) {
+            const transactionValue = parseFloat(transaction.value);
+
+            if (!isNaN(transactionValue)) {
+                totalValue += transactionValue;
+                validTransactionCount++;
+            }
+        }
+
+        const averageValue = validTransactionCount > 0 ? (totalValue / validTransactionCount).toFixed(2) : 0;
+        
+        averageTransactionValue.value = averageValue;
+
+        console.log('Average Value:', averageValue);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const getAllTransactionsMin = async () => {
+    try {
+        const response = await axios.get('transactions');
+        transactions.value = response.data.data;
+
+        if (transactions.value.length === 0) {
+            console.log('No transactions available.');
+            return 0;
+        }
+
+        let minTransaction = parseFloat(transactions.value[0].value);
+
+        for (const transaction of transactions.value) {
+            const transactionValue = parseFloat(transaction.value);
+
+            if (!isNaN(transactionValue) && transactionValue < minTransaction) {
+                minTransaction = transactionValue;
+            }
+        }
+
+        console.log('Minimum Transaction Value:', minTransaction);
+        minTransactionValue.value = minTransaction.toFixed(2);
+        return minTransactionValue.value;
+    } catch (error) {
+        console.error(error);
+        return 0;
+    }
+};
+
+const getAllTransactionsMax = async () => {
+    try {
+        const response = await axios.get('transactions');
+        transactions.value = response.data.data;
+
+        if (transactions.value.length === 0) {
+            console.log('No transactions available.');
+            return 0;
+        }
+
+        let maxTransaction = parseFloat(transactions.value[0].value);
+
+        for (const transaction of transactions.value) {
+            const transactionValue = parseFloat(transaction.value);
+
+            if (!isNaN(transactionValue) && transactionValue > maxTransaction) {
+                maxTransaction = transactionValue;
+            }
+        }
+
+        maxTransactionValue.value = maxTransaction.toFixed(2);
+        return maxTransactionValue.value;
+    } catch (error) {
+        console.error(error);
+        return 0;
     }
 };
 
@@ -141,6 +228,9 @@ onMounted(async () => {
         if (isAdmin.value == "A") {
             await calculateTotalVCardBalance();
             await getAllTransactions30DateSum();
+            await getAllTransactionsAvarage();
+            await getAllTransactionsMin();
+            await getAllTransactionsMax();
         } else if (userStore.user.user_type == "V") {
             await TotalBalance();
             await getAllTransactions();
@@ -157,14 +247,16 @@ onMounted(async () => {
         <h1>Estatísticas</h1>
         <div>
             <div v-if=" userStore.user.user_type=='A'">
-                <h2>para Admin</h2>
+                <h2>Para Admin</h2>
                 <h6>Total de vCards: {{ totalVCards }}</h6>
                 <h6>Contagem de balanço total: {{ totalVCardBalance }}€</h6>
                 <h6>Contagem das transações dos ultimos 30 dias: {{ transactions30Sum }}€</h6>
+                <h6>Média de valores das transações: {{ averageTransactionValue }}€</h6>
+                <h6>Valor mínimo das transações: {{ minTransactionValue }}€</h6>
+                <h6>Valor máximo das transações: {{ maxTransactionValue }}€</h6>
             </div>
             <div v-if="userStore.user.user_type=='V'">
-                <h2>para vCard</h2>
-                <h6>Total de vCards: {{ totalVCards }}</h6>
+                <h2>Para vCard</h2>
                 <h6>Contagem de balanço total: {{ totalVCardBalance }}€</h6>
                 <div v-if="transactions.length > 0">
                 <h3>Transações:</h3>
