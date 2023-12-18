@@ -22,23 +22,16 @@ class StoreUpdateTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-          //'id' => 'required|numeric',
           'vcard' => 'required|string|exists:vcards,phone_number',
-          //'date' => 'required|date',
-          //'datetime' => 'required|date',
           'type' => 'required|in:C,D',
           'value' => 'required|numeric',
-          //'old_balance' => 'required|numeric',
-          //'new_balance' => 'required|numeric',
           'payment_type' => 'required|in:VCARD,MBWAY,IBAN,MB,VISA',
           'payment_reference' => 'required|string',
-          //'pair_transaction' => 'nullable|numeric',
-          //'pair_vcard' => 'nullable|string|exists:vcards,phone_number',
           'category_id' => 'nullable|numeric|exists:categories,id',
           'description' => 'nullable|string|max:255',
 
           //new boolean val that shows if the transaction is a pair transaction
           //we send 2 requests in vue, one for the transaction and another for the pair transaction
-          'is_pair' => 'required|boolean',
+          'is_pair' => 'nullable|boolean',
         ];
     } }
