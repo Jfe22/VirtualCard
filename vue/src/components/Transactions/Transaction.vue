@@ -89,7 +89,7 @@ const save = async () => {
 
         if (transaction.value.type == 'D')
           pair_transaction.value.type = 'C'
-        else
+        else 
           pair_transaction.value.type = 'D'
 
         pair_transaction.value.value = transaction.value.value
@@ -114,11 +114,7 @@ const save = async () => {
 
 
       originalValueStr = JSON.stringify(transaction.value)
-
-
       toast.success('transaction #' + transaction.value.id + ' was created successfully.')
-
-
       router.back()
     } catch (error) {
       if (error.response.status == 422) {
@@ -145,8 +141,6 @@ const save = async () => {
     }
   }
 }
-
-
 
 const cancel = () => {
   originalValueStr = JSON.stringify(transaction.value)

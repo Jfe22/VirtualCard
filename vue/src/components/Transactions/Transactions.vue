@@ -40,44 +40,18 @@ const loadUsers = async () => {
   }
 }
 
-//function to add a new transaction
-const addTransaction = async (transaction) => {
+const addTransaction = () => {
   router.push({ name: 'NewTransaction' })
-  socket.emit('newTransaction')
 }
 
-//socket to add a new transaction
-socket.on('newProject', (project) => {
-  transactions.value.push(project)
-  toast.success(`A new transaction was created`)
-})
-
-//function to edit a transaction
-const editTransaction = async (transaction) => {
+const editTransaction = (transaction) => {
   router.push({ name: 'Transaction', params: { id: transaction.id } })
-  socket.emit('editTransaction')
 }
 
-//socket to edit a transaction
-socket.on('editTransaction', (transaction) => {
-  let idx = transactions.value.findIndex((t) => t.id === transaction.id)
-  if (idx >= 0) {
-    transactions.value.splice(idx, 1, transaction)
-  }
-  toast.success(`Transaction ${transaction.description} was edited`)
-})
-
-//function to delete a transaction
-const deleteTransaction = async (transaction) => {
+const deleteTransaction = (transaction) => {
   transactionToDelete.value = transaction
-  socket.emit('deleteTransaction')
   deleteConfirmationDialog.value.show()
 }
-
-//socket to delete a transaction
-socket.on('deleteTransaction', (transaction) => {
-  deleteTransactionConfirmed()
-})
 
 const deleteTransactionConfirmed = async () => {
   try {
