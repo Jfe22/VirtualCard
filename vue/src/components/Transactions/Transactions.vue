@@ -131,14 +131,16 @@ onMounted(() => {
           <td>{{ transaction.type }}</td>
           <td>{{ transaction.date}}</td>
           <td>{{ transaction.description }}</td>
-          <td v-show="userStore.user.user_type=='A'">
+
+          <td v-if="userStore.user.user_type == 'A'">
             <button type="button" class="btn btn-success px-4 btn-editTransaction"
               @click="editTransaction">&nbsp;Edit</button>
           </td>
-          <td v-show="userStore.user.user_type=='A'">
+          <td v-if="userStore.user.user_type == 'A'">
             <button type="button" class="btn btn-danger px-4 btn-deleteTransaction"
               @click="deleteTransaction">&nbsp;Delete</button>
           </td>
+
         </tr>
       </tbody>
     </table>
