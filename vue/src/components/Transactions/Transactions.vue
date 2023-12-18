@@ -24,8 +24,17 @@ socket.on('newTransaction', (transaction) => {
 
 const loadTransactions = async () => {
   try {
-    const response = await axios.get('transactions')
-    transactions.value = response.data.data
+    if (userStore.user) {
+      if (userStore.user.user_type == "A") { 
+        const response = await axios.get('transactions')
+        transactions.value = response.data.data
+      }
+      else {
+        const response = await axios.get('vcards/' + userStore.user.username + '/transactions')
+        transactions.value = response.data.data
+      }
+    } 
+    
   } catch (error) {
     console.error(error)
   }
@@ -87,10 +96,12 @@ onMounted(() => {
     <table class="table">
       <thead>
         <tr>
+          <th scope="col">Vcard</th>
           <th scope="col">Mount</th>
           <th scope="col">Type</th>
           <th scope="col">Reference</th>
           <th scope="col">Classification</th>
+          <th scope="col">Date</th>
           <th scope="col">Description</th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -98,10 +109,12 @@ onMounted(() => {
       </thead>
       <tbody>
         <tr v-for="transaction in transactions" :key="transactions.id">
-          <th scope="row">{{ transaction.value }}</th>
+          <th scope="row">{{ transaction.vcard}}</th>
+          <td>{{ transaction.value}}</td>
           <td>{{ transaction.payment_type }}</td>
           <td>{{ transaction.payment_reference }}</td>
           <td>{{ transaction.type }}</td>
+          <td>{{ transaction.date}}</td>
           <td>{{ transaction.description }}</td>
           <td>
             <button type="button" class="btn btn-success px-4 btn-editTransaction"
