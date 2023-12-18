@@ -73,7 +73,8 @@ class TransactionController extends Controller
       return new TransactionResource($transaction);
     }
 
-    public function destroy(Transaction $transaction) {
+    //static because we call this method from VcardController
+    public static function destroy(Transaction $transaction) {
       $transaction->delete();
       return response()->json();
     }
