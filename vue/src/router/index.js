@@ -98,8 +98,16 @@ const router = createRouter({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+let handlingFirstRoute = true
+
+router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
+
+  if (handlingFirstRoute) {
+    handlingFirstRoute = false
+    await userStore.restoreToken()
+  }
+
   if (!userStore.user && to.name !== 'login' && to.name !== 'Register') {
     next({ name: 'login' })
     return
