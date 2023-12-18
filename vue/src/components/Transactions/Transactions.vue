@@ -2,7 +2,7 @@
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import TransactionsTable from './TransactionsTable.vue'
 import { useUserStore } from '../../stores/user.js'
 
@@ -12,7 +12,6 @@ const router = useRouter()
 const transactions = ref([])
 const users = ref([])
 const transactionToDelete = ref(null)
-const deleteConfirmationDialog = ref(null)
 
 const userStore = useUserStore();
 const socket = inject('socket')
@@ -34,63 +33,33 @@ const loadTransactions = async () => {
         transactions.value = response.data.data
       }
     } 
-    
   } catch (error) {
     console.error(error)
   }
 }
 
-const loadUsers = async () => {
-  try {
-    const response = await axios.get('users')
-    users.value = response.data.data
-  } catch (error) {
-    console.error(error)
-  }
-}
+const deleteTransaction = async (transaction) => {
+  if (userStore.user_type === 'A') {
+    try {
+      if (transaction && transaction.id) {
+        // Agora, podemos prosseguir com a exclusão usando o ID da transação
+        const deleteResponse = await axios.delete(`transactions/${transaction.id}`);
+        console.log(deleteResponse);
 
-const addTransaction = () => {
-  router.push({ name: 'NewTransaction' })
-  socket.emit('newTransaction', transaction)
-}
+        socket.emit('deleteTransaction', transaction);
+        loadTransactions();
 
-socket.on('newTransaction', (transaction) => {
-  toast.info(`New Transaction ${transaction.id} was added`)
-})
-
-const editTransaction = (transaction) => {
-  router.push({ name: 'Transaction', params: { id: transaction.id } })
-  socket.emit('editTransaction', transaction)
-}
-
-socket.on('editTransaction', (transaction) => {
-  toast.info(`Transaction ${transaction.id} was edited`)
-})
-
-const deleteTransaction = (transaction) => {
-  transactionToDelete.value = transaction
-  deleteConfirmationDialog.value.show()
-  socket.emit('deleteTransaction', transaction)
-}
-
-socket.on('deleteTransaction', (transaction) => {
-  toast.info(`Transaction ${transaction.id} was deleted`)
-})
-
-const deleteTransactionConfirmed = async () => {
-  try {
-    const response = await axios.delete('transactions/' + transactionToDelete.value.id)
-    let deletedTransaction = response.data.data
-    let idx = transactions.value.findIndex((t) => t.id === deletedTransaction.id)
-    if (idx >= 0) {
-      transactions.value.splice(idx, 1)
+        toast.success(`Transaction ${transaction.id} was deleted`);
+      } else {
+        console.error('Transaction ID is undefined or null');
+        toast.error(`Failed to delete the transaction.`);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(`Failed to delete the transaction.`);
     }
-    toast.info(`Transaction ${transactionToDeleteDescription.value} was deleted`)
-  } catch (error) {
-    console.log(error)
-    toast.error(`It was not possible to delete Transaction ${transactionToDeleteDescription.value}!`)
   }
-}
+};
 
 onMounted(() => {
   loadTransactions()
@@ -100,7 +69,7 @@ onMounted(() => {
 <template>
   <div class="mx-2 mt-2">
     <h1>Transactions History</h1>
-    <button type="button" class="btn btn-success px-4 btn-addtask" v-show="userStore.user.user_type=='A'">
+    <button type="button" class="btn btn-success px-4 btn-addtask">
       <router-link class="nav-link" :to="{ name: 'NewTransaction' }">
         Add Transaction
       </router-link>
@@ -131,16 +100,14 @@ onMounted(() => {
           <td>{{ transaction.type }}</td>
           <td>{{ transaction.date}}</td>
           <td>{{ transaction.description }}</td>
-
-          <td v-if="userStore.user.user_type == 'A'">
+          <td >
             <button type="button" class="btn btn-success px-4 btn-editTransaction"
               @click="editTransaction">&nbsp;Edit</button>
           </td>
-          <td v-if="userStore.user.user_type == 'A'">
+          <td>
             <button type="button" class="btn btn-danger px-4 btn-deleteTransaction"
-              @click="deleteTransaction">&nbsp;Delete</button>
+              @click="deleteTransaction(transaction)">&nbsp;Delete</button>
           </td>
-
         </tr>
       </tbody>
     </table>
