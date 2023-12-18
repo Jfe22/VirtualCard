@@ -8,10 +8,11 @@ const userStore = useUserStore();
 const router = useRouter();
 
 const isAdmin = ref(false);
-const totalVCardBalance = ref(0);  // Para armazenar o total do saldo de vCards
-const totalVCards = ref(0);  // Para armazenar o total de vCards
-const totalVCardBalance30 = ref(0);  // Para armazenar o total do saldo de vCards
+const totalVCardBalance = ref(0);
+const totalVCards = ref(0);
+const totalVCardBalance30 = ref(0);
 const totalVCards30 = ref(0);
+const transactions = ref([]);
 
 const TotalBalance = async () => {
     try {
@@ -28,6 +29,7 @@ const TotalBalance = async () => {
         // Certifique-se de que o saldo é um número antes de atribuir
         if (currentUserVCard && !isNaN(currentUserVCard.balance)) {
             totalVCardBalance.value = parseFloat(currentUserVCard.balance).toFixed(2);
+            totalVCards.value += 1;
         } else {
             console.error("Balanço inválido.");
             totalVCardBalance.value = 0;
@@ -60,48 +62,22 @@ const calculateTotalVCardBalance = async () => {
     }
 }
 
-const TotalBalanceFor30Days = async () => {
+const getAllTransactions = async () => {
     try {
-        // Certifique-se de que o usuário está logado
-        if (!userStore.user) {
-            console.error("Usuário não logado.");
-            return;
-        }
-
-        // Defina a data inicial como sendo 30 dias atrás
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - 30);
-
-        // Buscar as transações do usuário no período de 30 dias
-        const response = await axios.get(`transactions/${transaction.id}`, {
-            params: {
-                startDate: startDate.toISOString(),
-                endDate: new Date().toISOString(),
-            },
-        });
-
-        const transactions = response.data.data;
-
-        // Contar o número de transações e calcular o saldo total
-        let totalTransactions = 0;
-        let totalBalance = 0;
-
-        transactions.forEach(transaction => {
-            // Certifique-se de que o saldo da transação é um número
-            if (!isNaN(parseFloat(transaction.amount))) {
-                totalTransactions += 1;
-                totalBalance += parseFloat(transaction.amount);
-            }
-        });
-
-        // Atualize os valores conforme necessário
-        totalVCards30.value = totalTransactions;
-        totalVCardBalance30.value = totalBalance.toFixed(2);
-
+        const response = await axios.get('transactions');
+        transactions.value = response.data.data;
     } catch (error) {
-        console.error("Erro ao calcular saldo e número de transações:", error);
+        console.error(error);
     }
-};
+}
+
+const filterTransactionsByUsername = () => {
+    if (userStore.user) {
+        transactions.value = transactions.value.filter(transaction => transaction.vcard === userStore.user.username);
+    }
+}
+    
+
 
 onMounted(async () => {
     if (!userStore.user) {
@@ -117,8 +93,10 @@ onMounted(async () => {
             await calculateTotalVCardBalance();
         } else if (userStore.user.user_type == "V") {
             await TotalBalance();
-            await TotalBalanceFor30Days(); 
+            await getAllTransactions();
+            filterTransactionsByUsername(); 
         }
+        
     }
 })
 </script>
@@ -141,9 +119,18 @@ onMounted(async () => {
                 <h2>para vCard</h2>
                 <h6>Total de vCards: {{ totalVCards }}</h6>
                 <h6>Contagem de balanço total: {{ totalVCardBalance }}€</h6>
-                <h6>X: {{ totalVCardBalance30 }}€</h6>
-                <h6>X: {{ totalVCards30 }}€</h6>
-                
+                <div v-if="transactions.length > 0">
+                <h3>Transações:</h3>
+                <ul>
+                    <li v-for="transaction in transactions" :key="transaction.id">
+                        ID:{{ transaction.id }} 
+                        Valor:{{ transaction.value }}€
+                    </li>
+                </ul>
+            </div>
+            <div v-else>
+                <p>Sem transações disponíveis.</p>
+            </div>
             </div>
             <div v-else>
                 <p>Carregando estatísticas...</p>
