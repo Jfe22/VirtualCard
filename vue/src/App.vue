@@ -6,6 +6,7 @@ import { useUserStore } from './stores/user.js'
 import axios from 'axios';
 import { ref, onMounted } from 'vue'
 
+
 const toast = useToast()
 const userStore = useUserStore()
 const router = useRouter()
@@ -25,10 +26,12 @@ const userTransactions = ref([])
 onMounted(async () => {
   userStore.restoreToken()
   try {
-    //const userId = 1
+    userStore.loadUser();
+  
     const userId = userStore.user.id
     const response = await axios.get("vcards/" + userId + "/transactions")
     userTransactions.value = response.data.data
+
   } catch (error) {
     console.log(error)
   }
@@ -70,7 +73,7 @@ onMounted(async () => {
             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
               <li>
                 <router-link class="dropdown-item" :class="{ active: $route.name == 'User' && $route.params.id == 1 }"
-                  :to="{ name: 'User', params: { id: 1 } }">
+                  :to="{ name: 'User', params: { id: userStore.vcardNmr } }">
                   <i class="bi bi-person-circle"></i>
                   Profile
                 </router-link>
