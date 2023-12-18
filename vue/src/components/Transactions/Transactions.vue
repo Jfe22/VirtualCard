@@ -51,16 +51,31 @@ const loadUsers = async () => {
 
 const addTransaction = () => {
   router.push({ name: 'NewTransaction' })
+  socket.emit('newTransaction', transaction)
 }
+
+socket.on('newTransaction', (transaction) => {
+  toast.info(`New Transaction ${transaction.id} was added`)
+})
 
 const editTransaction = (transaction) => {
   router.push({ name: 'Transaction', params: { id: transaction.id } })
+  socket.emit('editTransaction', transaction)
 }
+
+socket.on('editTransaction', (transaction) => {
+  toast.info(`Transaction ${transaction.id} was edited`)
+})
 
 const deleteTransaction = (transaction) => {
   transactionToDelete.value = transaction
   deleteConfirmationDialog.value.show()
+  socket.emit('deleteTransaction', transaction)
 }
+
+socket.on('deleteTransaction', (transaction) => {
+  toast.info(`Transaction ${transaction.id} was deleted`)
+})
 
 const deleteTransactionConfirmed = async () => {
   try {

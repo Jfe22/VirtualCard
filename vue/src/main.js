@@ -2,6 +2,8 @@
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
 import "bootstrap"
+import Toast from "vue-toastification"
+import "vue-toastification/dist/index.css"
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -25,5 +27,20 @@ axios.defaults.headers.common['Content-Type'] = 'application/json'
 
 app.use(createPinia())
 app.use(router)
+
+app.use(Toast, {
+    position: "top-center",
+    timeout: 3000,
+    closeOnClick: true,
+    pauseOnFocusLoss: true,
+    pauseOnHover: true,
+    draggable: true,
+    draggablePercent: 0.6,
+    showCloseButtonOnHover: true,
+    hideProgressBar: true,
+    closeButton: "button",
+    icon: true,
+    rtl: false
+   })
 
 app.mount('#app')

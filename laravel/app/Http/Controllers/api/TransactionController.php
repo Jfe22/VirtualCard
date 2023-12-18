@@ -41,6 +41,9 @@ class TransactionController extends Controller
       if ($vcard->balance <= $transaction->value && $transaction->type == 'D')
         return response()->json(['error' => 'Saldo insuficiente.'], 403);
 
+      if ($vcard->blocked)
+        return response()->json(['error' => 'Cartão bloqueado.'], 403);
+
       $transaction->date = date('Y-m-d');
       $transaction->datetime = date('Y-m-d H:i:s');
 
@@ -70,7 +73,8 @@ class TransactionController extends Controller
       return new TransactionResource($transaction);
     }
 
-    public function destroy(Transaction $transaction) {
+    //static because we call this method from VcardController
+    public static function destroy(Transaction $transaction) {
       $transaction->delete();
       return response()->json();
     }

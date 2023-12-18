@@ -16,11 +16,20 @@ httpServer.listen(8080, () =>{
 io.on('connection', (socket) => {
 	console.log(`client ${socket.id} has connected`)
 
-  //updates the transaction history in realtime
+  //transactions
   socket.on('newTransaction', (transaction) => {
     socket.broadcast.emit('newTransaction', transaction)
     console.log('New transaction with id: ' + transaction.id)
   })
+  socket.on('editTransaction', (transaction) => {
+    socket.broadcast.emit('editTransaction', transaction)
+    console.log('Transaction with id: ' + transaction.id + ' was edited')
+  })
+  socket.on('deleteTransaction', (transaction) => {
+    socket.broadcast.emit('deleteTransaction', transaction)
+    console.log('Transaction with id: ' + transaction.id + ' was deleted')
+  })
+
 
   //change the balance in app
   //notifies the user if he receives money
