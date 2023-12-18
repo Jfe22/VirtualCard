@@ -131,7 +131,7 @@ onMounted(() => {
           <td>{{ transaction.type }}</td>
           <td>{{ transaction.date}}</td>
           <td>{{ transaction.description }}</td>
-          <td>
+          <td >
             <button type="button" class="btn btn-success px-4 btn-editTransaction"
               @click="editTransaction">&nbsp;Edit</button>
           </td>
