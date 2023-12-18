@@ -38,11 +38,15 @@ class TransactionController extends Controller
 
 
       $vcard = Vcard::where('phone_number', $transaction->vcard)->first();
+      $pair_vcard = Vcard::where('phone_number', $transaction->payment_reference)->first();
       if ($vcard->balance <= $transaction->value && $transaction->type == 'D')
         return response()->json(['error' => 'Saldo insuficiente.'], 403);
 
       if ($vcard->blocked)
         return response()->json(['error' => 'Cartão bloqueado.'], 403);
+
+      if ($pair_vcard->blocked)
+        return response()->json(['error' => 'Cartão de destino bloqueado.'], 403);
 
       $transaction->date = date('Y-m-d');
       $transaction->datetime = date('Y-m-d H:i:s');
