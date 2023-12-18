@@ -40,9 +40,8 @@ onMounted(() => {
 <template>
     <div>
       <h1>Estatísticas</h1>
-  
-      <template v-if="userStore.user">
-        <div v-if="userStore.user.type === 'vCard'">
+
+        <div>
           <h2>Estatísticas para vCards</h2>
           <div v-if="vCardStats !== null && vCardStats !== undefined">
             <h6>Contagem atual de vCards ativos: {{ vCardStats.activeVCardCount }}</h6>
@@ -54,7 +53,6 @@ onMounted(() => {
             <p>Carregando estatísticas...</p>
           </div>
         </div>
-      </template>
     </div>
   </template>
   
