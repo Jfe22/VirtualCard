@@ -6,6 +6,10 @@ import avatarNoneUrl from '@/assets/avatar-none.png'
 export const useUserStore = defineStore('user', () => {
   const serverBaseUrl = inject('serverBaseUrl')
   const user = ref(null)
+  //----------- testing -------------
+  const vcardNmr = computed(() => user.value?.username ?? -1)
+  const user_type = computed(() => user.value.user_type)
+  //---------------------------------
   const userId = computed(() => user.value?.id ?? -1)
   const userName = computed(() => user.value?.name ?? 'Anonymous')
   const userPhotoUrl = computed(() =>
@@ -35,6 +39,7 @@ export const useUserStore = defineStore('user', () => {
     try {
       const response = await axios.post('login', credentials)
       axios.defaults.headers.common.Authorization = "Bearer " + response.data.access_token
+      sessionStorage.setItem('token', response.data.access_token)
       await loadUser()
       return true
     }
@@ -54,5 +59,17 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { user, userId, userName, userPhotoUrl, loadUser, clearUser, login, logout }
+  async function restoreToken() {
+    let storedToken = sessionStorage.getItem('token')
+    if (storedToken) {
+      axios.defaults.headers.common.Authorization = "Bearer " + storedToken
+      await loadUser()
+      //await loadInProgressProjects()
+      return true
+    }
+    clearUser()
+    return false
+  }
+
+  return { user, userId, userName, userPhotoUrl, loadUser, clearUser, login, logout, vcardNmr, user_type, restoreToken}
 })

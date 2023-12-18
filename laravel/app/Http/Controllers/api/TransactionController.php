@@ -52,8 +52,9 @@ class TransactionController extends Controller
         $transaction->pair_vcard = $transaction->payment_reference;
         if ($transaction->is_pair)
           $transaction->pair_transaction = ($transaction->id) - 1 ;
-        else
-          $transaction->pair_transaction = ($transaction->id) + 1 ;
+        //else
+        // db constraint error porque essa transação ainda não existe
+         // $transaction->pair_transaction = ($transaction->id) + 1 ;
       }
 
       $transaction->save();

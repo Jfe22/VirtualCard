@@ -2,12 +2,14 @@
 import axios from 'axios'
 import { useToast } from "vue-toastification"
 import { useRouter, onBeforeRouteLeave } from 'vue-router'
+import { useUserStore } from '../../stores/user'
 
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watch, computed, onMounted, inject } from 'vue'
 import TransactionDetail from "./TransactionDetail.vue"
 
 const toast = useToast()
 const router = useRouter()
+const userStore = useUserStore()
 
 const newTransaction = () => {
   return {
@@ -34,8 +36,11 @@ const pair_transaction = ref(newTransaction())
 const users = ref([])
 const errors = ref(null)
 const confirmationLeaveDialog = ref(null)
+// devia estar numa transaction store??
+const socket = inject('socket')
 // String with the JSON representation after loading the transaction (new or edit)
 let originalValueStr = ''
+
 
 const loadTransaction = async (id) => {
   originalValueStr = ''
@@ -61,16 +66,26 @@ const save = async () => {
 
 
       //creates the normal transaction
-      transaction.value.is_pair = false;
+      //transaction.value.vcard = userStore.userId
+      console.log('user store id val')
+      console.log(userStore.user.username)
+      console.log('user store id val')
+      transaction.value.vcard = userStore.user.username
+      transaction.value.is_pair = false
+      transaction.value.type = 'D'
       const response = await axios.post('transactions', transaction.value)
       transaction.value = response.data.data
 
       //patch the user vcard balance
-      const responsePatch = await axios.patch('vcards/' + transaction.value.vcard + '/balance', transaction.value.new_balance)
+      console.log(transaction.value)
+      const new_balance = {
+        "balance": transaction.value.new_balance
+      }
+      const responsePatch = await axios.patch('vcards/' + transaction.value.vcard + '/balance', new_balance)
 
       //creates the pair transaction
       if (transaction.value.payment_type == 'VCARD') {
-        pair_transaction.value.vcard = transaction.value.pair_vcard;
+        pair_transaction.value.vcard = transaction.value.pair_vcard
 
         if (transaction.value.type == 'D')
           pair_transaction.value.type = 'C'
@@ -86,10 +101,14 @@ const save = async () => {
         pair_transaction.value = responsePairT.data.data
 
         //patch the pair vcard balance
-        const responsePatchPair = await axios.patch('vcards/' + pair_transaction.value.vcard + '/balance', pair_transaction.value.new_balance)
+        const new_balance_pair = {
+          "balance": pair_transaction.value.new_balance
+        }
+        const responsePatchPair = await axios.patch('vcards/' + pair_transaction.value.vcard + '/balance', new_balance_pair)
       }
 
 
+      socket.emit('newTransaction', transaction.value)
 
 
       originalValueStr = JSON.stringify(transaction.value)

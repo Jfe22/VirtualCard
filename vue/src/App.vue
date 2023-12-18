@@ -21,9 +21,10 @@ const logout = async () => {
 const userTransactions = ref([])
 
 onMounted(async () => {
+  userStore.restoreToken()
   try {
     //const userId = 1
-    const userId = userStore.userId
+    const userId = userStore.user.id
     const response = await axios.get("vcards/" + userId + "/transactions")
     userTransactions.value = response.data.data
   } catch (error) {

@@ -12,7 +12,8 @@ const isAdmin = ref(false);
 
 const fetchVCardStats = async () => {
     try {
-        const response = await axios.get(`vcards/${userStore.user?.customer[0].id}/stats`);
+          const response = await axios.get("transactions");
+        //const response = await axios.get(`vcards/${userStore.user?.customer[0].id}/stats`);
         vCardStats.value = response.data;
     } catch (error) {
         console.error(error);
@@ -21,15 +22,15 @@ const fetchVCardStats = async () => {
 
 onMounted(() => {
     if (!userStore.user) {
-        router.push('/');
+        router.push('/stats');
     } else {
         userStore.loadUser();
 
         // Verifica se o utilizador é um administrador
-        isAdmin.value = userStore.user.type === 'admin';
+        isAdmin.value = userStore.user.user_type
 
         // Carrega estatísticas
-        if (!isAdmin.value) {
+        if (isAdmin.value == "A") {
             fetchVCardStats();
         }
     }
@@ -39,16 +40,15 @@ onMounted(() => {
 <template>
   <div>
     <h1>Estatísticas</h1>
-    <template v-if="userStore.user">
-      <div v-if="userStore.user.type === 'vCard'">
+    <h2>Estatísticas para vCards</h2>
         <h2>Estatísticas para vCards</h2>
-        <div>
-          <h6>Contagem atual de vCards ativos: {{ vCardStats?.activeVCardCount }}</h6>
-          <h6>Soma dos saldos atuais de vCard: {{ vCardStats?.totalVCardBalance }}</h6>
-          <h6>Contagem ou soma de todas as transações em um período específico: {{ vCardStats?.transactionsInTimeFrame }}</h6>
-          <h6>Total de transações por tipo de pagamento: {{ vCardStats?.transactionsByPaymentType }}</h6>
+        
+          <h6>Contagem atual de vCards ativos: {{ vCardStats }}</h6>
+          <h6>Soma dos saldos atuais de vCard: {{ vCardStats.totalVCardBalance }}</h6>
+          <h6>Contagem ou soma de todas as transações em um período específico: {{ vCardStats.transactionsInTimeFrame }}</h6>
+          <h6>Total de transações por tipo de pagamento: {{ vCardStats.transactionsByPaymentType }}</h6>
+       
+        
+          <p>Carregando estatísticas...</p>
         </div>
-      </div>
     </template>
-  </div>
-</template>
