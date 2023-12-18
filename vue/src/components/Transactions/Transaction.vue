@@ -95,6 +95,8 @@ const save = async () => {
         pair_transaction.value.value = transaction.value.value
         pair_transaction.value.payment_type = 'VCARD'
         pair_transaction.value.payment_reference = transaction.value.vcard
+        pair_transaction.value.category_id = transaction.value.category_id
+        pair_transaction.value.description = transaction.value.description + ' (pair transaction)'
         pair_transaction.value.is_pair = true
 
         const responsePairT = await axios.post('transactions', pair_transaction.value)
