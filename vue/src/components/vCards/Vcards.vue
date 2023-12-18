@@ -40,11 +40,10 @@ socket.on('deleteVCard', (vCard) => {
 })
 
 
-const blockVcard = async () => {
+const blockVcard = async (phone_number) => {
   if (userStore.user_type == 'A') {
     try {
-      //end point still TODO
-      const response = await axios.patch('vcards/' + vCard.phone_number + '/block')
+      const response = await axios.patch('vcards/' + phone_number + '/block')
       console.log(response)
       socket.emit('vcardBlocked', vCard)
       loadVcards()
@@ -92,6 +91,7 @@ onMounted(() => {
           <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Balance</th>
+          <th scope="col">Blocked</th>
           <th scope="col"></th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -103,9 +103,10 @@ onMounted(() => {
           <td>{{ vCard.name }}</td>
           <td>{{ vCard.email }}</td>
           <td>{{ vCard.balance }}</td>
+          <td>{{ vCard.blocked }}</td>
           <td><button type="button" class="btn btn-success px-4 btn-editVcard">
             <router-link class="nav-link" :class="{ active: $route.name == 'User' && $route.params.id == 1 }" 
-            :to="{ name: 'User', params: { id: 1 } }"> <!--Mudar para id de cada vCard-->
+            :to="{ name: 'User', params: { id: vCard.phone_number } }"> 
                <i class="bi bi-pencil"></i>&nbsp;
             </router-link>
         </button></td>
