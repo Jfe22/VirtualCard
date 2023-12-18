@@ -38,17 +38,23 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <h1>Estatísticas</h1>
-    <h2>Estatísticas para vCards</h2>
-        <h2>Estatísticas para vCards</h2>
-        
-          <h6>Contagem atual de vCards ativos: {{ vCardStats }}</h6>
-          <h6>Soma dos saldos atuais de vCard: {{ vCardStats.totalVCardBalance }}</h6>
-          <h6>Contagem ou soma de todas as transações em um período específico: {{ vCardStats.transactionsInTimeFrame }}</h6>
-          <h6>Total de transações por tipo de pagamento: {{ vCardStats.transactionsByPaymentType }}</h6>
-       
-        
-          <p>Carregando estatísticas...</p>
+    <div>
+      <h1>Estatísticas</h1>
+  
+      <template v-if="userStore.user">
+        <div v-if="userStore.user.type === 'vCard'">
+          <h2>Estatísticas para vCards</h2>
+          <div v-if="vCardStats !== null && vCardStats !== undefined">
+            <h6>Contagem atual de vCards ativos: {{ vCardStats.activeVCardCount }}</h6>
+            <h6>Soma dos saldos atuais de vCard: {{ vCardStats.totalVCardBalance !== null && vCardStats.totalVCardBalance !== undefined ? vCardStats.totalVCardBalance : 'N/A' }}</h6>
+            <h6>Contagem ou soma de todas as transações em um período específico: {{ vCardStats.transactionsInTimeFrame }}</h6>
+            <h6>Total de transações por tipo de pagamento: {{ vCardStats.transactionsByPaymentType }}</h6>
+          </div>
+          <div v-else>
+            <p>Carregando estatísticas...</p>
+          </div>
         </div>
-    </template>
+      </template>
+    </div>
+  </template>
+  
