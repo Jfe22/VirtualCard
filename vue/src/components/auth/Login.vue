@@ -36,7 +36,7 @@ const login = async () => {
     <hr>
     <div class="mb-3">
       <div class="mb-3">
-        <label for="inputUsername" class="form-label">Username</label>
+        <label for="inputUsername" class="form-label">Username / Phone Number</label>
         <input type="text" class="form-control" id="inputUsername" required v-model="credentials.username">
       </div>
     </div>
