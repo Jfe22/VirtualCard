@@ -14,23 +14,23 @@ const totalVCards = ref(0);  // Para armazenar o total de vCards
 
 const TotalBalance = async () => {
     try {
-        const response = await axios.get('vcards');
-        const vCards = response.data.data;
+        // Certifique-se de que o usuário está logado
+        if (!userStore.user) {
+            console.error("Usuário não logado.");
+            return;
+        }
 
-        // Inicializa o saldo total
-        let totalBalance = 0;
+        // Buscar o VCard do usuário logado
+        const response = await axios.get(`vcards/${userStore.user.username}`);
+        const currentUserVCard = response.data.data;
 
-        // Percorre os vCards
-        vCards.forEach(vCard => {
-            // Verifica se é o vCard do usuário logado e se o saldo é um número
-            if (vCard.id == userStore.user.username) {
-                totalBalance += parseFloat(vCard.balance);
-                totalVCards.value += 1;
-            }
-        });
-
-        // Atribui o saldo total ao totalVCardBalance
-        totalVCardBalance.value = totalBalance.toFixed(2);
+        // Certifique-se de que o saldo é um número antes de atribuir
+        if (currentUserVCard && !isNaN(currentUserVCard.balance)) {
+            totalVCardBalance.value = parseFloat(currentUserVCard.balance).toFixed(2);
+        } else {
+            console.error("Balanço inválido.");
+            totalVCardBalance.value = 0;
+        }
     } catch (error) {
         console.error(error);
     }
@@ -93,7 +93,6 @@ onMounted(async () => {
             await calculateTotalVCardBalance();
             await calcuteCenas(); 
         } else if (userStore.user.user_type == "V") {
-            const vCardId = userStore.user.username; // Substitua pelo ID real do vCard
             await TotalBalance();
         }
     }
