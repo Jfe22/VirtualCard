@@ -47,19 +47,19 @@ onMounted(async () => {
 
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav">
-          <li class="nav-item">
+          <li class="nav-item" v-show="!userStore.user">
             <router-link class="nav-link" :class="{ active: $route.name === 'Register' }" :to="{ name: 'Register' }">
               <i class="bi bi-bi bi-person-check-fill"></i>
               Register
             </router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-show="!userStore.user">
             <router-link class="nav-link" :class="{ active: $route.name === 'Login' }" :to="{ name: 'Login' }">
               <i class="bi bi-box-arrow-in-right"></i>
               Login
             </router-link>
           </li>
-          <li class="nav-item dropdown"> //v-if="login"
+          <li class="nav-item dropdown" v-show="userStore.user">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
               data-bs-toggle="dropdown" aria-expanded="false">
               <img :src="userStore.userPhotoUrl" class="rounded-circle z-depth-0 avatar-img" alt="avatar image">
@@ -85,7 +85,9 @@ onMounted(async () => {
                 <hr class="dropdown-divider">
               </li>
               <li>
-                <a class="dropdown-item" @click.prevent="logout"><i class="bi bi-arrow-right"></i>Logout</a>
+                
+                  <a class="dropdown-item" @click.prevent="logout"><i class="bi bi-arrow-right"></i>Logout</a>
+                
               </li>
             </ul>
           </li>
@@ -96,9 +98,9 @@ onMounted(async () => {
 
   <div class="container-fluid">
     <div class="row">
-      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"> //v-if="login"
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="position-sticky pt-3">
-          <ul class="nav flex-column">
+          <ul class="nav flex-column" v-if="userStore.user">
             <li class="nav-item">
               <router-link class="nav-link" :class="{ active: $route.name === 'Dashboard' }" :to="{ name: 'Dashboard' }">
                 <i class="bi bi-house"></i>
@@ -117,10 +119,9 @@ onMounted(async () => {
                 Vcards
               </router-link>
             </li>
-            <li class="nav-item" ><!--v-for="transaction in userTransactions" :key="transaction.id"-->
-              <router-link class="nav-link"
-                :class="{ active: $route.name == 'Transactions'  }" 
-                :to="{ name: 'Transactions' }"> <!--&& $route.params.id == transaction.id // , params: { id: transaction.id }-->
+            <li class="nav-item">
+              <router-link class="nav-link" :class="{ active: $route.name == 'Transactions' }"
+                :to="{ name: 'Transactions' }">
                 <i class="bi bi-caret-right"></i>
                 Transactions
               </router-link>
