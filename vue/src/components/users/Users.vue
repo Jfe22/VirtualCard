@@ -1,12 +1,10 @@
 <script setup>
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted,inject } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import UserTable from "./UserTable.vue"
-import { useToast } from 'vue-toastification'
 
 const router = useRouter()
-const socket = inject('socket')
 
 const users = ref([])
 
@@ -26,12 +24,7 @@ const loadUsers = async () => {
 
 const editUser = (user) => {
   router.push({ name: 'User', params: { id: user.id } })
-  socket.emit('editVCard', user)
 }
-
-socket.on('editUser', (user) => {
-  toast.success(`User ${user.id} was edited`)
-})
 
 onMounted (() => {
   loadUsers()

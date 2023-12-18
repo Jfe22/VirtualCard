@@ -2,13 +2,12 @@
 import axios from 'axios'
 import { useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
-import { ref,inject } from 'vue'
+import { ref } from 'vue'
 import { useUserStore } from '../../stores/user.js'
 
 const toast = useToast()
 const router = useRouter()
 const userStore = useUserStore()
-const socket = inject('socket')
 
 const credentials = ref({
   phone_number: '',
@@ -30,7 +29,7 @@ const register = async () => {
     console.log(response)
     //credentials.value = response.data.data
     toast.success('User ' + credentials.username + ' has registered successfully.')
-    socket.emit('newVCard', response.data.data)
+    emit('register')
     router.back()
   } catch (error) {
     console.log(error)
@@ -38,12 +37,6 @@ const register = async () => {
 
   }
 }
-
-socket.on('newVCard', (vCard) => {
-  console.log('newVCard', vCard)
-  vCard.value.push(vCard)
-  toast.success(`A new vCard was created`)
-})
 
 </script>
 

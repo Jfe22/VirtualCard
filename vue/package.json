@@ -16,7 +16,6 @@
     "socket.io-client": "^4.7.2",
     "vue": "^3.3.12",
     "vue-router": "^4.2.5",
-    "vue-toast-notification": "^3.1.2",
     "vue-toastification": "^2.0.0-rc.5",
     "vuejs-paginate": "^2.1.0"
   },

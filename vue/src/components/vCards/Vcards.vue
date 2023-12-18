@@ -1,15 +1,11 @@
 <script setup>
 
 import axios from 'axios'
-import { ref, onMounted,inject } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '../../stores/user.js';
-import { useToast } from 'vue-toastification';
 
 const vCards = ref([])
 const userStore = useUserStore()
-const toast = useToast()
-const socket = inject('socket')
-
 
 const loadVcards = async () => {
   //only for admins?
@@ -27,18 +23,13 @@ const deleteVcard = async () => {
     try {
       const response = await axios.delete('vcards/' + vCard.phone_number)
       console.log(response)
-      socket.emit('deleteVCard', vCard)
       loadVcards()
     } catch (error) {
       console.error(error)
     }
   }
+  
 }
-
-socket.on('deleteVCard', (vCard) => {
-  toast.success(`VCard with phone_number ${vCard.phone_number} was deleted`)
-})
-
 
 const blockVcard = async () => {
   if (userStore.user_type == 'A') {
@@ -46,7 +37,6 @@ const blockVcard = async () => {
       //end point still TODO
       const response = await axios.patch('vcards/' + vCard.phone_number + '/block')
       console.log(response)
-      socket.emit('vcardBlocked', vCard)
       loadVcards()
     } catch (error) {
       console.error(error)
@@ -54,27 +44,7 @@ const blockVcard = async () => {
   }
 }
 
-socket.on('vcardBlocked', (vCard) => {
-  toast.success(`VCard with phone_number ${vCard.phone_number} was blocked`)
-})
 
-const unblockVcard = async () => {
-  if (userStore.user_type == 'A') {
-    try {
-      //end point still TODO
-      const response = await axios.patch('vcards/' + vCard.phone_number + '/unblock')
-      console.log(response)
-      socket.emit('vcardUnblocked', vCard)
-      loadVcards()
-    } catch (error) {
-      console.error(error)
-    }
-  }
-}
-
-socket.on('vcardUnblocked', (vCard) => {
-  toast.success(`VCard with phone_number ${vCard.phone_number} was unblocked`)
-})
 
 onMounted(() => {
   loadVcards()
@@ -110,7 +80,6 @@ onMounted(() => {
             </router-link>
         </button></td>
           <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="blockVcard">&nbsp;Block</button></td>
-          <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="unblockVcard">&nbsp;Unblock</button></td>
           <td><button type="button" class="btn btn-danger px-4 btn-deleteVcard" @click="deleteVcard">&nbsp;Delete</button></td>
         </tr>
       </tbody>
