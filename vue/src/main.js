@@ -14,13 +14,16 @@ import App from './App.vue'
 import router from './router'
 
 const app = createApp(App)
+//const serverBaseUrl = 'http://localhost:8000'
+const apiDomain = import.meta.env.VITE_API_DOMAIN
+const wsConnction = import.meta.env.VITE_WS_CONNECTION
 
-const serverBaseUrl = 'http://localhost:8000'
-app.provide('serverBaseUrl', serverBaseUrl)
+//app.provide('serverBaseUrl', serverBaseUrl)
+app.provide('serverBaseUrl', apiDomain)
+//app.provide('socket', io("http://localhost:8080"))
+app.provide('socket', io(wsConnction))
 
 app.provide('axios', axios);
-
-app.provide('socket', io("http://localhost:8080"))
 
 axios.defaults.baseURL = serverBaseUrl + '/api'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
