@@ -100,7 +100,7 @@ onMounted(() => {
 <template>
   <div class="mx-2 mt-2">
     <h1>Transactions History</h1>
-    <button type="button" class="btn btn-success px-4 btn-addtask">
+    <button type="button" class="btn btn-success px-4 btn-addtask" v-show="userStore.user.user_type=='A'">
       <router-link class="nav-link" :to="{ name: 'NewTransaction' }">
         Add Transaction
       </router-link>
@@ -131,6 +131,7 @@ onMounted(() => {
           <td>{{ transaction.type }}</td>
           <td>{{ transaction.date}}</td>
           <td>{{ transaction.description }}</td>
+
           <td v-if="userStore.user.user_type == 'A'">
             <button type="button" class="btn btn-success px-4 btn-editTransaction"
               @click="editTransaction">&nbsp;Edit</button>
@@ -139,6 +140,7 @@ onMounted(() => {
             <button type="button" class="btn btn-danger px-4 btn-deleteTransaction"
               @click="deleteTransaction">&nbsp;Delete</button>
           </td>
+
         </tr>
       </tbody>
     </table>
