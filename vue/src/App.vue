@@ -1,18 +1,20 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import { useRouter } from 'vue-router'
 import { useUserStore } from './stores/user.js'
 import axios from 'axios';
 import { ref, onMounted } from 'vue'
 
 const toast = useToast()
 const userStore = useUserStore()
+const router = useRouter()
 
 const logout = async () => {
   if (await userStore.logout()) {
     toast.success('User has logged out of the application.')
     delete axios.defaults.headers.common.Authorization
-    router.push({ name: 'Login' })
+    router.push({ name: 'login' })
   } else {
     toast.error('There was a problem logging out of the application!')
   }
