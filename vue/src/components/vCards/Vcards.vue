@@ -1,83 +1,83 @@
 <script setup>
 
-import axios from 'axios'
-import { ref, onMounted,inject } from 'vue'
+import axios from 'axios';
+import { ref, onMounted, inject } from 'vue';
 import { useUserStore } from '../../stores/user.js';
 import { useToast } from 'vue-toastification';
 
-const vCards = ref([])
-const userStore = useUserStore()
-const toast = useToast()
-const socket = inject('socket')
-
+const vCards = ref([]);
+const userStore = useUserStore();
+const toast = useToast();
+const socket = inject('socket');
 
 const loadVcards = async () => {
-  //only for admins?
   try {
-    const response = await axios.get('vcards')
-    console.log(response)
-    vCards.value = response.data.data
+    const response = await axios.get('vcards');
+    vCards.value = response.data.data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
-const deleteVcard = async () => {
-  if (userStore.user_type == 'A') {
+const deleteVcard = async (vCard) => {
+  if (userStore.user_type === 'A') {
     try {
-      const response = await axios.delete('vcards/' + vCard.phone_number)
-      console.log(response)
-      socket.emit('deleteVCard', vCard)
-      loadVcards()
+      // Antes de excluir, definir o saldo do VCard para zero
+      await axios.patch(`vcards/${vCard.phone_number}/balance`, { balance: 0 });
+
+      // Agora, excluir o VCard
+      const response = await axios.delete(`vcards/${vCard.phone_number}`);
+      console.log(response);
+
+      socket.emit('deleteVCard', vCard);
+      loadVcards();
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
-}
+};
 
 socket.on('deleteVCard', (vCard) => {
-  toast.success(`VCard with phone_number ${vCard.phone_number} was deleted`)
-})
+  toast.success(`VCard with phone_number ${vCard.phone_number} was deleted`);
+});
 
-
-const blockVcard = async (phone_number) => {
-  if (userStore.user_type == 'A') {
+const blockVcard = async (vCard) => {
+  if (userStore.user_type === 'A') {
     try {
-      const response = await axios.patch('vcards/' + phone_number + '/block')
-      console.log(response)
-      socket.emit('vcardBlocked', vCard)
-      loadVcards()
+      const response = await axios.patch(`vcards/${vCard.phone_number}/block`);
+      console.log(response);
+      socket.emit('vcardBlocked', vCard);
+      loadVcards();
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
-}
+};
 
 socket.on('vcardBlocked', (vCard) => {
-  toast.success(`VCard with phone_number ${vCard.phone_number} was blocked`)
-})
+  toast.success(`VCard with phone_number ${vCard.phone_number} was blocked`);
+});
 
-const unblockVcard = async () => {
-  if (userStore.user_type == 'A') {
+const unblockVcard = async (vCard) => {
+  if (userStore.user_type === 'A') {
     try {
-      //end point still TODO
-      const response = await axios.patch('vcards/' + vCard.phone_number + '/unblock')
-      console.log(response)
-      socket.emit('vcardUnblocked', vCard)
-      loadVcards()
+      const response = await axios.patch(`vcards/${vCard.phone_number}/unblock`);
+      console.log(response);
+      socket.emit('vcardUnblocked', vCard);
+      loadVcards();
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
-}
+};
 
 socket.on('vcardUnblocked', (vCard) => {
-  toast.success(`VCard with phone_number ${vCard.phone_number} was unblocked`)
-})
+  toast.success(`VCard with phone_number ${vCard.phone_number} was unblocked`);
+});
 
 onMounted(() => {
-  loadVcards()
-})
+  loadVcards();
+});
 
 </script>
 
@@ -91,7 +91,6 @@ onMounted(() => {
           <th scope="col">Name</th>
           <th scope="col">Email</th>
           <th scope="col">Balance</th>
-          <th scope="col">Blocked</th>
           <th scope="col"></th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -103,21 +102,19 @@ onMounted(() => {
           <td>{{ vCard.name }}</td>
           <td>{{ vCard.email }}</td>
           <td>{{ vCard.balance }}</td>
-          <td>{{ vCard.blocked }}</td>
-          <td><button type="button" class="btn btn-success px-4 btn-editVcard">
-            <router-link class="nav-link" :class="{ active: $route.name == 'User' && $route.params.id == 1 }" 
-            :to="{ name: 'User', params: { id: vCard.phone_number } }"> 
-               <i class="bi bi-pencil"></i>&nbsp;
-            </router-link>
-        </button></td>
-          <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="blockVcard">&nbsp;Block</button></td>
-          <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="unblockVcard">&nbsp;Unblock</button></td>
-          <td><button type="button" class="btn btn-danger px-4 btn-deleteVcard" @click="deleteVcard">&nbsp;Delete</button></td>
+          <td>
+            <button type="button" class="btn btn-success px-4 btn-editVcard">
+              <router-link class="nav-link" :class="{ active: $route.name == 'User' && $route.params.id == 1 }" 
+              :to="{ name: 'User', params: { id: 1 } }"> <!--Mudar para id de cada vCard-->
+                <i class="bi bi-pencil"></i>&nbsp;
+              </router-link>
+            </button>
+          </td>
+          <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="blockVcard(vCard)">&nbsp;Block</button></td>
+          <td><button type="button" class="btn btn-danger px-4 btn-blockVcard" @click="unblockVcard(vCard)">&nbsp;Unblock</button></td>
+          <td><button type="button" class="btn btn-danger px-4 btn-deleteVcard" @click="deleteVcard(vCard)">&nbsp;Delete</button></td>
         </tr>
       </tbody>
     </table>
   </div>
 </template>
-
-
-
