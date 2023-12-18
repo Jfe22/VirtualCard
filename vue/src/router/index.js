@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '../stores/user'
 import HomeView from '../views/HomeView.vue'
 
 import Dashboard from '../components/Dashboard.vue'
@@ -96,5 +97,17 @@ const router = createRouter({
     }, 
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
+  if (!userStore.user && to.name !== 'login') {
+    next({ name: 'login' })
+    return
+  }
+
+  next()
+
+})
+
 
 export default router
