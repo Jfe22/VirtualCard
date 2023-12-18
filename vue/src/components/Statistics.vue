@@ -10,28 +10,32 @@ const router = useRouter();
 const vCardStats = ref(null);  // Para armazenar as estatísticas dos vCards
 const isAdmin = ref(false);
 const totalVCardBalance = ref(0);  // Para armazenar o total do saldo de vCards
+const totalVCards = ref(0);  // Para armazenar o total de vCards
 
-const calcuteCenas = async () => {
+const TotalBalance = async () => {
     try {
-        const endDate = new Date();  // Data atual
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - 30);  // Subtrai 30 dias da data atual
+        const response = await axios.get('vcards');
+        const vCards = response.data.data;
 
-        const response = await axios.get("transactions", {
-            params: {
-                vCardId: userStore.user.usarname,  // Substitua pelo ID real da vCard
-                startDate: startDate.toISOString(),  // Formata a data para string ISO
-                endDate: endDate.toISOString(),
-            },
+        // Inicializa o saldo total
+        let totalBalance = 0;
+
+        // Percorre os vCards
+        vCards.forEach(vCard => {
+            // Verifica se é o vCard do usuário logado e se o saldo é um número
+            if (vCard.id == userStore.user.username) {
+                totalBalance += parseFloat(vCard.balance);
+                totalVCards.value += 1;
+            }
         });
 
-        vCardStats.value = response.data;
+        // Atribui o saldo total ao totalVCardBalance
+        totalVCardBalance.value = totalBalance.toFixed(2);
     } catch (error) {
         console.error(error);
     }
 };
 
-const totalVCards = ref(0);  // Para armazenar o total de vCards
 
 
 const calculateTotalVCardBalance = async () => {
@@ -55,10 +59,29 @@ const calculateTotalVCardBalance = async () => {
     }
 }
 
+const calcuteCenas = async () => {
+    try {
+        const endDate = new Date();  // Data atual
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 30);  // Subtrai 30 dias da data atual
+
+        const response = await axios.get("transactions", {
+            params: {
+                vCardId: userStore.user.usarname,  // Substitua pelo ID real da vCard
+                startDate: startDate.toISOString(),  // Formata a data para string ISO
+                endDate: endDate.toISOString(),
+            },
+        });
+
+        vCardStats.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 onMounted(async () => {
     if (!userStore.user) {
-        router.push('/stats');
+        router.push('/');
     } else {
         userStore.loadUser();
 
@@ -69,17 +92,30 @@ onMounted(async () => {
         if (isAdmin.value == "A") {
             await calculateTotalVCardBalance();
             await calcuteCenas(); 
+        } else if (userStore.user.user_type == "V") {
+            const vCardId = userStore.user.username; // Substitua pelo ID real do vCard
+            await TotalBalance();
         }
     }
-});
+})
 </script>
 
 <template>
     <div>
         <h1>Estatísticas</h1>
         <div>
-            <h2>Estatísticas para vCards</h2>
-            <div v-if="vCardStats !== null && vCardStats !== undefined">
+            
+            <div v-if=" userStore.user.user_type=='A'">
+                <h2>para Admin</h2>
+                <h6>Total de vCards: {{ totalVCards }}</h6>
+                <h6>Contagem de balanço total: {{ totalVCardBalance }}€</h6>
+                <li v-for="(stat, index) in vCardStats" :key="index">
+                        {{ stat.date }}: {{ stat.amount }}€
+                    </li>
+            </div>
+            
+            <div v-if="userStore.user.user_type=='V'">
+                <h2>para vCard</h2>
                 <h6>Total de vCards: {{ totalVCards }}</h6>
                 <h6>Contagem de balanço total: {{ totalVCardBalance }}€</h6>
                 <li v-for="(stat, index) in vCardStats" :key="index">
