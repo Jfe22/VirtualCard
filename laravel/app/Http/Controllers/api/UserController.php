@@ -45,8 +45,5 @@ class UserController extends Controller
       $user->save();
       return new UserResource($user);
     }
-    
-
-
 
 }

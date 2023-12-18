@@ -29,9 +29,6 @@ class StoreUpdateTransactionRequest extends FormRequest
           'payment_reference' => 'required|string',
           'category_id' => 'nullable|numeric|exists:categories,id',
           'description' => 'nullable|string|max:255',
-
-          //new boolean val that shows if the transaction is a pair transaction
-          //we send 2 requests in vue, one for the transaction and another for the pair transaction
           'is_pair' => 'nullable|boolean',
         ];
     } }

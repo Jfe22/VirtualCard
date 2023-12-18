@@ -71,25 +71,6 @@ class TransactionController extends Controller
 
     public function update(StoreUpdateTransactionRequest $request, Transaction $transaction) {
       $transaction->update($request->validated());
-
-      $transaction = Transaction::find($transaction->id);
-      $transaction->payment_reference = $request->validated()['payment_reference'];
-      $transaction->payment_type = $request->validated()['payment_type'];
-      $transaction->value = $request->validated()['value'];
-      $transaction->description = $request->validated()['description'];
-
-      $vcard = Vcard::where('phone_number', $transaction->vcard)->first();
-      $transaction->old_balance = $vcard->balance;
-      
-      if ($transaction->payment_type == 'VCARD' ) 
-        $transaction->pair_vcard = $transaction->payment_reference;
-
-      if ($transaction->type == 'D')
-        $transaction->new_balance = $transaction->old_balance - $transaction->value;
-      else
-        $transaction->new_balance = $transaction->old_balance + $transaction->value;
-
-
       return new TransactionResource($transaction);
     }
 
