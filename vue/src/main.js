@@ -12,7 +12,7 @@ import router from './router'
 
 const app = createApp(App)
 
-const serverBaseUrl = 'http://localhost:8000'
+const serverBaseUrl = 'http://laravel.test'
 app.provide('serverBaseUrl', serverBaseUrl)
 
 app.provide('axios', axios);
