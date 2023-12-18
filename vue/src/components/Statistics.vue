@@ -11,14 +11,28 @@ const vCardStats = ref(null);  // Para armazenar as estatísticas dos vCards
 const isAdmin = ref(false);
 const totalVCardBalance = ref(0);  // Para armazenar o total do saldo de vCards
 
-const fetchVCardStats = async () => {
+const calcuteCenas = async () => {
     try {
-        const response = await axios.get("transactions");
+        const endDate = new Date();  // Data atual
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 30);  // Subtrai 30 dias da data atual
+
+        const response = await axios.get("transactions", {
+            params: {
+                vCardId: userStore.user.usarname,  // Substitua pelo ID real da vCard
+                startDate: startDate.toISOString(),  // Formata a data para string ISO
+                endDate: endDate.toISOString(),
+            },
+        });
+
         vCardStats.value = response.data;
     } catch (error) {
         console.error(error);
     }
 };
+
+const totalVCards = ref(0);  // Para armazenar o total de vCards
+
 
 const calculateTotalVCardBalance = async () => {
     try {
@@ -31,6 +45,7 @@ const calculateTotalVCardBalance = async () => {
             // Certifique-se de que o saldo é um número antes de somar
             if (!isNaN(vCard.balance)) {
                 totalBalance += parseFloat(vCard.balance);
+                totalVCards.value += 1;
             }
         }
 
@@ -52,8 +67,8 @@ onMounted(async () => {
 
         // Carrega estatísticas
         if (isAdmin.value == "A") {
-            await fetchVCardStats();
             await calculateTotalVCardBalance();
+            await calcuteCenas(); 
         }
     }
 });
@@ -65,7 +80,11 @@ onMounted(async () => {
         <div>
             <h2>Estatísticas para vCards</h2>
             <div v-if="vCardStats !== null && vCardStats !== undefined">
+                <h6>Total de vCards: {{ totalVCards }}</h6>
                 <h6>Contagem de balanço total: {{ totalVCardBalance }}€</h6>
+                <li v-for="(stat, index) in vCardStats" :key="index">
+                        {{ stat.date }}: {{ stat.amount }}€
+                    </li>
             </div>
             <div v-else>
                 <p>Carregando estatísticas...</p>
