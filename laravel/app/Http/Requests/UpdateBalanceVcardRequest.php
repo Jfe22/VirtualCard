@@ -22,7 +22,6 @@ class UpdateBalanceVcardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
             'balance' => 'required|numeric',
         ];
     }
