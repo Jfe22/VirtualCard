@@ -12,6 +12,7 @@ const totalVCardBalance = ref(0);
 const totalVCards = ref(0);
 const transactions = ref([]);
 const transactions30 = ref([]);
+const transactions30Sum = ref([]);
 
 const TotalBalance = async () => {
     try {
@@ -89,6 +90,32 @@ const getAllTransactions30Date = async () => {
     }
 }
 
+const getAllTransactions30DateSum = async () => {
+    try {
+        const response = await axios.get('transactions');
+        const allTransactions = response.data.data;
+
+        const today = new Date();
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(today.getDate() - 30);
+
+        let sumOfValues = 0;
+
+        for (const transaction of allTransactions) {
+            const transactionDate = new Date(transaction.date);
+
+            if (transactionDate.getTime() >= thirtyDaysAgo.getTime() && transactionDate.getTime() <= today.getTime()) {
+                sumOfValues += parseFloat(transaction.value);
+            }
+        }
+
+        transactions30Sum.value = sumOfValues.toFixed(2);
+        console.log('transactions30Sum.value:', transactions30Sum.value);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 const filterTransactionsByUsername = () => {
     if (userStore.user) {
         transactions.value = transactions.value.filter(transaction => transaction.vcard === userStore.user.username);
@@ -113,6 +140,7 @@ onMounted(async () => {
         // Carrega estatísticas
         if (isAdmin.value == "A") {
             await calculateTotalVCardBalance();
+            await getAllTransactions30DateSum();
         } else if (userStore.user.user_type == "V") {
             await TotalBalance();
             await getAllTransactions();
@@ -128,16 +156,12 @@ onMounted(async () => {
     <div>
         <h1>Estatísticas</h1>
         <div>
-            
             <div v-if=" userStore.user.user_type=='A'">
                 <h2>para Admin</h2>
                 <h6>Total de vCards: {{ totalVCards }}</h6>
                 <h6>Contagem de balanço total: {{ totalVCardBalance }}€</h6>
-                <h6>X: {{ totalVCardBalance30 }}€</h6>
-                <h6>X: {{ totalVCards30 }}€</h6>
-                
+                <h6>Contagem das transações dos ultimos 30 dias: {{ transactions30Sum }}€</h6>
             </div>
-            
             <div v-if="userStore.user.user_type=='V'">
                 <h2>para vCard</h2>
                 <h6>Total de vCards: {{ totalVCards }}</h6>
@@ -150,11 +174,6 @@ onMounted(async () => {
                         Valor:{{ transaction.value }}€
                     </li>
                 </ul>
-            </div>
-            <div v-else>
-                <p>Sem transações disponíveis.</p>
-            </div>
-            <div v-if="transactions.length > 0">
                 <h3>Transações dos Ultimos 30 dias:</h3>
                 <ul>
                     <li v-for="transaction30 in transactions30" :key="transaction30.id">
@@ -167,10 +186,10 @@ onMounted(async () => {
             <div v-else>
                 <p>Sem transações disponíveis.</p>
             </div>
-            </div>
             <div v-else>
                 <p>Carregando estatísticas...</p>
             </div>
         </div>
+    </div>
     </div>
 </template>
