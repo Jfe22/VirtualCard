@@ -101,8 +101,9 @@ onMounted(() => {
           <td>{{ transaction.date}}</td>
           <td>{{ transaction.description }}</td>
           <td v-if="userStore.user.user_type == 'A'" >
-            <button type="button" class="btn btn-success px-4 btn-editTransaction"
-              @click="editTransaction">&nbsp;Edit</button>
+            <router-link class="nav-link" :to="{ name: 'Transaction', params: { id: transaction.id } }">
+              <button type="button" class="btn btn-success px-4 btn-editTransaction">&nbsp;Edit</button>
+            </router-link>
           </td>
           <td v-if="userStore.user.user_type == 'A'">
             <button type="button" class="btn btn-danger px-4 btn-deleteTransaction"

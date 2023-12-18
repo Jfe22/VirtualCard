@@ -28,7 +28,7 @@ const deleteVcard = async (vCard) => {
       // Agora, excluir o VCard
       const response = await axios.delete(`vcards/${vCard.phone_number}`);
       console.log(response);
-
+      toast.success(`VCard with phone_number ${vCard.phone_number} was deleted`);
       socket.emit('deleteVCard', vCard);
       loadVcards();
     } catch (error) {
