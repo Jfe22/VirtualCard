@@ -1,12 +1,15 @@
 <script setup>
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, inject } from 'vue'
 import UserTable from "./UserTable.vue"
+import { emit } from 'process';
+import { useToast } from 'vue-toastification';
 
 const router = useRouter()
-
+const toast = useToast()
 const users = ref([])
+const socket = inject("socket")
 
 const totalUsers = computed(() => {
   return users.value.length
@@ -24,7 +27,13 @@ const loadUsers = async () => {
 
 const editUser = (user) => {
   router.push({ name: 'User', params: { id: user.id } })
+  socket.emit('editVCard')
 }
+
+socket.on('editVCard', (user) => {
+  users.value.push(user)
+  toast.success(`VCard was edited`)
+})
 
 onMounted (() => {
   loadUsers()
