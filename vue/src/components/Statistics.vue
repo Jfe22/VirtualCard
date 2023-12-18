@@ -79,6 +79,30 @@ const calcuteCenas = async () => {
     }
 };
 
+const numTransactions = async () => {
+    try {
+        // Certifique-se de que o usuário está logado
+        if (!userStore.user) {
+            console.error("Usuário não logado.");
+            return;
+        }
+
+        // Buscar o VCard do usuário logado
+        const response = await axios.get(`vcards/${userStore.user.username}`);
+        const currentUserVCard = response.data.data;
+
+        // Certifique-se de que o saldo é um número antes de atribuir
+        if (currentUserVCard && !isNaN(currentUserVCard.balance)) {
+            totalVCardBalance.value = parseFloat(currentUserVCard.balance).toFixed(2);
+        } else {
+            console.error("Balanço inválido.");
+            totalVCardBalance.value = 0;
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 onMounted(async () => {
     if (!userStore.user) {
         router.push('/');
@@ -94,6 +118,7 @@ onMounted(async () => {
             await calcuteCenas(); 
         } else if (userStore.user.user_type == "V") {
             await TotalBalance();
+            await numTransactions();
         }
     }
 })
@@ -115,7 +140,6 @@ onMounted(async () => {
             
             <div v-if="userStore.user.user_type=='V'">
                 <h2>para vCard</h2>
-                <h6>Total de vCards: {{ totalVCards }}</h6>
                 <h6>Contagem de balanço total: {{ totalVCardBalance }}€</h6>
                 <li v-for="(stat, index) in vCardStats" :key="index">
                         {{ stat.date }}: {{ stat.amount }}€
