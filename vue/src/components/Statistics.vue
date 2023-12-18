@@ -10,9 +10,8 @@ const router = useRouter();
 const isAdmin = ref(false);
 const totalVCardBalance = ref(0);
 const totalVCards = ref(0);
-const totalVCardBalance30 = ref(0);
-const totalVCards30 = ref(0);
 const transactions = ref([]);
+const transactions30 = ref([]);
 
 const TotalBalance = async () => {
     try {
@@ -71,11 +70,34 @@ const getAllTransactions = async () => {
     }
 }
 
+const getAllTransactions30Date = async () => {
+    try {
+        const response = await axios.get('transactions');
+        transactions30.value = response.data.data;
+
+        // Filtrar transações para os últimos 30 dias
+        const today = new Date();
+        const thirtyDaysAgo = new Date(today);
+        thirtyDaysAgo.setDate(today.getDate() - 30);
+
+        transactions30.value = transactions30.value.filter(transaction => {
+            const transactionDate = new Date(transaction.date);
+            return transactionDate >= thirtyDaysAgo && transactionDate <= today;
+        });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const filterTransactionsByUsername = () => {
     if (userStore.user) {
         transactions.value = transactions.value.filter(transaction => transaction.vcard === userStore.user.username);
+
+        transactions30.value = transactions30.value.filter(transaction => transaction.vcard === userStore.user.username);
     }
 }
+
+
     
 
 
@@ -94,6 +116,7 @@ onMounted(async () => {
         } else if (userStore.user.user_type == "V") {
             await TotalBalance();
             await getAllTransactions();
+            await getAllTransactions30Date();
             filterTransactionsByUsername(); 
         }
         
@@ -125,6 +148,19 @@ onMounted(async () => {
                     <li v-for="transaction in transactions" :key="transaction.id">
                         ID:{{ transaction.id }} 
                         Valor:{{ transaction.value }}€
+                    </li>
+                </ul>
+            </div>
+            <div v-else>
+                <p>Sem transações disponíveis.</p>
+            </div>
+            <div v-if="transactions.length > 0">
+                <h3>Transações dos Ultimos 30 dias:</h3>
+                <ul>
+                    <li v-for="transaction30 in transactions30" :key="transaction30.id">
+                        ID:{{ transaction30.id }} 
+                        Valor:{{ transaction30.value }}€
+                        Date: {{ transaction30.date }}
                     </li>
                 </ul>
             </div>
