@@ -19,6 +19,7 @@ io.on('connection', (socket) => {
   //updates the transaction history in realtime
   socket.on('newTransaction', (transaction) => {
     socket.broadcast.emit('newTransaction', transaction)
+    console.log('New transaction with id: ' + transaction.id)
   })
 
   //change the balance in app
@@ -27,8 +28,29 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('balanceChange', value)
   })
 
-  //updates userstore in realtime and blocks user if needed
-  socket.on('vcardBlocked', (value) => {
-    socket.broadcast.emit('vcardBlocked', value)
+
+  //vCards
+  socket.on('newVCard', (vCard) => {
+    socket.broadcast.emit('newVCard', vCard)
+    console.log('New vCard/User created with phone number: ' + vCard.phone_number)
   })
+  socket.on('editVCard', (user) => {
+    socket.broadcast.emit('editVCard', user)
+    console.log('vCard/User with id: ' + user.id + ' was edited')
+  })
+  socket.on('deleteVCard', (vCard) => {
+    socket.broadcast.emit('deleteVCard', vCard)
+    console.log('vCard with phone number: ' + vCard.phone_number + ' was deleted')
+  })
+
+  //updates userstore in realtime and blocks user if needed
+  socket.on('vcardBlocked', (vCard) => {
+    socket.broadcast.emit('vcardBlocked', vCard)
+    console.log('vCard with phone number: ' + vCard.phone_number + ' was blocked')
+  })
+  socket.on('vcardUnblocked', (vCard) => {
+    socket.broadcast.emit('vcardUnblocked', vCard)
+    console.log('vCard with phone number: ' + vCard.phone_number + ' was unblocked')
+  })
+
 })
