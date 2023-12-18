@@ -107,13 +107,7 @@ onMounted(async () => {
                 Dashboard
               </router-link>
             </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :class="{ active: $route.name === 'Users' }" :to="{ name: 'Users' }">
-                <i class="bi bi-caret-right"></i>
-                Users
-              </router-link>
-            </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="userStore.user.user_type == 'A'">
               <router-link class="nav-link" :class="{ active: $route.name === 'Vcards' }" :to="{ name: 'Vcards' }">
                 <i class="bi bi-caret-right"></i>
                 Vcards
