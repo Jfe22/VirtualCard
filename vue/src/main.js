@@ -25,7 +25,7 @@ app.provide('socket', io(wsConnction))
 
 app.provide('axios', axios);
 
-axios.defaults.baseURL = serverBaseUrl + '/api'
+axios.defaults.baseURL = apiDomain + '/api'
 axios.defaults.headers.common['Content-Type'] = 'application/json'
 
 app.use(createPinia())

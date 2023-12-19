@@ -27,9 +27,6 @@ onMounted(async () => {
   userStore.restoreToken()
   try {
     userStore.loadUser();
-  
-    const userId = userStore.user.id
-    const response = await axios.get("vcards/" + userId + "/transactions")
     userTransactions.value = response.data.data
 
   } catch (error) {
